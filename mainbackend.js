@@ -2,7 +2,7 @@ const express = require("express");
 
 const app = express();
 
-const appjs = require("./backend/app");
+const appjs = require("./app");
 require("dotenv/config");
 
 app.use("/app", appjs);
