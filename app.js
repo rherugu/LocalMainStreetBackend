@@ -1,3 +1,5 @@
+//© COPYRIGHT LocalMainStreet 2020
+
 const express = require("express");
 
 const app = express();
