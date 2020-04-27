@@ -1,1 +1,1 @@
-worker: node mainbackend.js
+web: node mainbackend.js
