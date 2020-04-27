@@ -8,6 +8,8 @@ const bodyParser = require("body-parser");
 
 var compression = require("compression");
 
+const Post = require("./models/Post");
+
 require("dotenv/config");
 
 const cors = require("cors");
@@ -44,16 +46,18 @@ app.get("/", (req, res) => {
 
 //Connect to the Database:
 
-mongoose.connect(
-  process.env.DB_CONNECTION,
+// mongoose.connect(
+//   process.env.DB_CONNECTION,
 
-  { useNewUrlParser: true, useUnifiedTopology: true },
+//   { useNewUrlParser: true, useUnifiedTopology: true },
 
-  () =>
-    console.log(
-      "Connection to the MongoDB server-side database was successful."
-    )
-);
+//   () =>
+//     console.log(
+//       "Connection to the MongoDB server-side database was successful."
+//     )
+// );
+
+
 
 // app.listen(3000);
 

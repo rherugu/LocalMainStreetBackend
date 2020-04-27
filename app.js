@@ -19,10 +19,5 @@ app.get("/", (req, res) => {
   res.send("© LocalMainStreet 2020 Backend server");
 });
 
-app.listen(process.env.PORT || 3000, '0.0.0.0',() => {
-  console.log(
-    "Connected to databases, connect to Stripe, Nodemailer ready! Good to go!"
-  );
-});
 
 module.exports = app;

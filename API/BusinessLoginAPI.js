@@ -40,16 +40,16 @@ app.get("/", (req, res) => {
 
 //Connect to the Database:
 
-mongoose.connect(
-  process.env.DB_CONNECTION2,
+// mongoose.connect(
+//   process.env.DB_CONNECTION,
 
-  { useNewUrlParser: true, useUnifiedTopology: true },
+//   { useNewUrlParser: true, useUnifiedTopology: true },
 
-  () =>
-    console.log(
-      "Connection to the MongoDB server-side database was successful."
-    )
-);
+//   () =>
+//     console.log(
+//       "Connection to the MongoDB server-side database was successful."
+//     )
+// );
 
 // app.listen(3011);
 

@@ -2,6 +2,8 @@
 
 const express = require("express");
 
+const mongoose = require("mongoose");
+
 const app = express();
 
 const appjs = require("./app");
@@ -13,6 +15,18 @@ app.get("/", (req, res) => {
   res.send("Powered by express © LocalMainStreet 2020");
 });
 
-app.listen(process.env.PORT || 3001, '0.0.0.0', () => {
+mongoose.connect(
+  process.env.DB_CONNECTION,
+
+  { useNewUrlParser: true, useUnifiedTopology: true },
+
+  () =>
+    console.log(
+      "Connection to the MongoDB server-side database was successful."
+    )
+);
+
+
+app.listen(process.env.PORT || 3006, '0.0.0.0', () => {
   console.log("mainbackend up and running");
 }); 

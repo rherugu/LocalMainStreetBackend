@@ -1,5 +1,7 @@
 const express = require("express");
 
+const mongoose = require("mongoose");
+
 const router = express.Router();
 
 const app = express();
@@ -16,13 +18,24 @@ const bcrypt = require("bcryptjs");
 
 const jwt = require("jsonwebtoken");
 
+
+// mongoose.connect(
+//   process.env.DB_CONNECTION,
+
+//   { useNewUrlParser: true, useUnifiedTopology: true },
+
+//   () =>
+//     console.log(
+//       "Connection to the MongoDB server-side database was successful. POSTS"
+//     )
+// );
+
 //gets back all the posts
 router.get("/", async (req, res) => {
+  console.log("hihihi");
   try {
-    const NumberOfPosts = await Post.countDocuments();
     const posts = await Post.find();
     res.json(posts);
-    console.log("Number of Posts: ", NumberOfPosts);
   } catch (err) {
     res.json({ message: err });
   }

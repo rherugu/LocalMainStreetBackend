@@ -1,6 +1,6 @@
 const cors = require("cors");
 const express = require("express");
-const stripe = require("stripe")("sk_test_uJl5PPIm5zrfXwqPOCIpKP5k00kcciQo3z");
+const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 const uuid = require("uuid/v4");
 const helmet = require("helmet");
 
@@ -14,6 +14,10 @@ app.use(cors());
 app.get("/", (req, res) => {
   res.send("Add your Stripe Secret Key to the .require('stripe') statement!");
 });
+
+app.get("/checkout", (req, res) => {
+  res.send("POST call")
+})
 
 app.post("/checkout", async (req, res) => {
   console.log("Request:", req.body);
