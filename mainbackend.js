@@ -7,7 +7,8 @@ const mongoose = require("mongoose");
 const app = express();
 
 const appjs = require("./app");
-require("dotenv/config")
+
+require("dotenv/config");
 
 app.use("/app", appjs);
 
