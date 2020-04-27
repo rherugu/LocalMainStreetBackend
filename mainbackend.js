@@ -8,7 +8,7 @@ const app = express();
 
 const appjs = require("./app");
 
-require("dotenv/config");
+const config = require("dotenv/config");
 
 app.use("/app", appjs);
 
