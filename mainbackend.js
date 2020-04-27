@@ -17,7 +17,7 @@ app.get("/", (req, res) => {
 });
 
 mongoose.connect(
-  process.env.DB_CONNECTION,
+  String(process.env.DB_CONNECTION),
 
   { useNewUrlParser: true, useUnifiedTopology: true },
 
