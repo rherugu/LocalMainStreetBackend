@@ -55,6 +55,23 @@ app.post("/checkout", async (req, res) => {
         idempotency_key,
       }
     );
+
+    // const BankAccountToken = await stripe.tokens.create(
+    //   {
+    //     bank_account: {
+    //       country: 'US',
+    //       currency: 'usd',
+    //       account_holder_name: 'Jenny Rosen',
+    //       account_holder_type: 'individual',
+    //       routing_number: '110000000',
+    //       account_number: '000123456789',
+    //     },
+    //   },
+    //   function(err, token) {
+    //     console.error(err);
+    //   }
+    // );
+
     console.log("Charge:", { charge });
     status = "success";
   } catch (error) {

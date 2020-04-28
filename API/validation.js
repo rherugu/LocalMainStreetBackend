@@ -29,7 +29,10 @@ const BusinessValidation = (req) => {
     description: Joi.string().min(150).max(1000).required(),
     address: Joi.string().min(3).required(),
     phoneNumber: Joi.string().min(3).required(),
-    paymentMethod: Joi.string().required(),
+    accountHolderName: Joi.string().min(3).required(),
+    accountHolderType: Joi.string().min(3).required(),
+    routingNumber: Joi.string().min(3).required(),
+    accountNumber: Joi.string().min(3).required(),
   });
   return schema.validate(req);
 };

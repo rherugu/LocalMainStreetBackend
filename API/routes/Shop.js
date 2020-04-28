@@ -41,6 +41,15 @@ router.post("/", async (req, res) => {
 
   const hashedPassword = await bcrypt.hash(req.body.passwordb, salt);
 
+  //Hashing of the bank account information
+  const salt1 = await bcrypt.genSalt(16);
+
+  const hashedroutingNumber = await bcrypt.hash(req.body.routingNumber, salt1);
+
+  const salt2 = await bcrypt.genSalt(16);
+
+  const hashedaccountNumber = await bcrypt.hash(req.body.accountNumber, salt2);
+
   const shop = new Blogin({
     emailb: req.body.emailb,
     passwordb: hashedPassword,
@@ -50,7 +59,10 @@ router.post("/", async (req, res) => {
     description: req.body.description,
     address: req.body.address,
     phoneNumber: req.body.phoneNumber,
-    paymentMethod: req.body.paymentMethod,
+    accountHolderName: req.body.accountHolderName,
+    accountHolderType: req.body.accountHolderType,
+    routingNumber: hashedroutingNumber,
+    accountNumber: hashedaccountNumber
   });
 
   try {

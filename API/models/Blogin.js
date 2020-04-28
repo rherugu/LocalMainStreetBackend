@@ -33,10 +33,23 @@ const BloginSchema = mongoose.Schema({
     type: String,
     required: true,
   },
-  paymentMethod: {
+  accountHolderName: {
     type: String,
     required: true,
   },
+  accountHolderType: {
+    type: String,
+    required: true,
+  },
+  routingNumber: {
+    type: String,
+    required: true,
+  },
+  accountNumber: {
+    type: String,
+    required: true,
+  },
+
 });
 
 module.exports = mongoose.model("Blogin", BloginSchema);
