@@ -20,8 +20,8 @@ router.get("/send", (req, res) => {
 });
 
 var transport = {
-  service: "zoho",
-  host: "smtp.zoho.eu", // Don’t forget to replace with the SMTP host of your provider
+  service: "gmail",
+  host: "smtp.gmail.com", // Don’t forget to replace with the SMTP host of your provider
   port: 587,
   auth: {
     user: creds.USER,
@@ -50,7 +50,7 @@ router.post("/send", (req, res, next) => {
 
   var mail = {
     from: name,
-    to: "info@localmainstreet.com", // Change to email address that you want to receive messages on
+    to: "rherugu@gmail.com", // Change to email address that you want to receive messages on
     subject: "New Message from LocalMainStreet Contact Form",
     text: content,
   };
@@ -66,7 +66,7 @@ router.post("/send", (req, res, next) => {
       });
       transporter.sendMail(
         {
-          from: "info@localmainstreet.com",
+          from: "rherugu@gmail.com",
           to: email,
           subject: "Submission was successful",
           text:
