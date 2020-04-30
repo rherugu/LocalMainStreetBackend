@@ -3,6 +3,8 @@ const express = require("express");
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 const uuid = require("uuid/v4");
 const helmet = require("helmet");
+const Blogin = require("../API/models/Blogin");
+const bcrypt = require("bcryptjs");
 
 const app = express();
 var compression = require("compression");
@@ -20,7 +22,7 @@ app.get("/checkout", (req, res) => {
 })
 
 app.post("/checkout", async (req, res) => {
-  console.log("Request:", req.body);
+  // console.log("Request:", req.body);
 
   let error;
   let status;
@@ -55,24 +57,30 @@ app.post("/checkout", async (req, res) => {
         idempotency_key,
       }
     );
+    
+    const database = await Blogin.find();
+    console.log("abcdefghijklmnopqrstuvwxyz", database[0].routingNumber);
+    // console.log(database);
 
-    // const BankAccountToken = await stripe.tokens.create(
-    //   {
-    //     bank_account: {
-    //       country: 'US',
-    //       currency: 'usd',
-    //       account_holder_name: 'Jenny Rosen',
-    //       account_holder_type: 'individual',
-    //       routing_number: '110000000',
-    //       account_number: '000123456789',
-    //     },
-    //   },
-    //   function(err, token) {
-    //     console.error(err);
-    //   }
-    // );
+    const BankAccountToken = await stripe.tokens.create(
+      {
+        bank_account: {
+          country: 'US',
+          currency: 'usd',
+          account_holder_name: 'Raghav Herugu',
+          account_holder_type: 'Individual',
+          routing_number: '110000000',
+          account_number: '000123456789',
+        },
+      },
+      function(err, token) {
+        console.error(err);
+      }
+    );
 
-    console.log("Charge:", { charge });
+    console.log("&*&#*(&@(*$&*(@#&$*(@#&", BankAccountToken);
+
+    // console.log("Charge:", { charge });
     status = "success";
   } catch (error) {
     console.error("Error:", error);
