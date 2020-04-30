@@ -29,6 +29,7 @@ const BusinessValidation = (req) => {
     description: Joi.string().min(150).max(1000).required(),
     address: Joi.string().min(3).required(),
     phoneNumber: Joi.string().min(3).required(),
+    businessCatagory: Joi.string().min(1).required(),
     accountHolderName: Joi.string().min(3).required(),
     accountHolderType: Joi.string().min(3).required(),
     routingNumber: Joi.string().min(3).required(),

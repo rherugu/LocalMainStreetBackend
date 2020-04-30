@@ -31,7 +31,9 @@ app.use(function (req, res, next) {
 //Import Routes
 const shopRoute = require("./routes/Shop");
 
+
 app.use("/shop", shopRoute);
+
 
 //Routes
 app.get("/", (req, res) => {

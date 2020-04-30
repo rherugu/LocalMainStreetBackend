@@ -33,6 +33,10 @@ const BloginSchema = mongoose.Schema({
     type: String,
     required: true,
   },
+  businessCatagory: {
+    type: String,
+    required: true,
+  },
   accountHolderName: {
     type: String,
     required: true,
@@ -49,7 +53,6 @@ const BloginSchema = mongoose.Schema({
     type: String,
     required: true,
   },
-
 });
 
 module.exports = mongoose.model("Blogin", BloginSchema);

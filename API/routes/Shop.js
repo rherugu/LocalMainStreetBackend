@@ -59,6 +59,7 @@ router.post("/", async (req, res) => {
     description: req.body.description,
     address: req.body.address,
     phoneNumber: req.body.phoneNumber,
+    businessCatagory: req.body.businessCatagory,
     accountHolderName: req.body.accountHolderName,
     accountHolderType: req.body.accountHolderType,
     routingNumber: hashedroutingNumber,
