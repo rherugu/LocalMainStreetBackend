@@ -9,6 +9,8 @@ const app = express();
 const appjs = require("./app");
 
 const config = require("dotenv/config");
+const cors = require("cors");
+app.use(cors());
 
 app.use("/app", appjs);
 

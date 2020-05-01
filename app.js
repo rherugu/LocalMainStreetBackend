@@ -9,6 +9,8 @@ const contact = require("./contact/index");
 const payment = require("./payment/server");
 const LoginAPI = require("./API/LoginAPI");
 require("dotenv/config");
+const cors = require("cors");
+app.use(cors());
 
 app.use("/BusinessLoginAPI", BusinessLoginAPI);
 app.use("/contact", contact);
