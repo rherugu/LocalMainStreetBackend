@@ -19,14 +19,16 @@ app.use(function (req, res, next) {
   next();
 });
 
+// const paypal = require("./paypal");
+// app.use("/paypal", paypal);
 
 app.get("/", (req, res) => {
   res.send("Add your Stripe Secret Key to the .require('stripe') statement!");
 });
 
 app.get("/checkout", (req, res) => {
-  res.send("POST call")
-})
+  res.send("POST call");
+});
 
 app.post("/checkout", async (req, res) => {
   // console.log("Request:", req.body);
@@ -64,7 +66,7 @@ app.post("/checkout", async (req, res) => {
         idempotency_key,
       }
     );
-    
+
     const database = await Blogin.find();
     console.log("abcdefghijklmnopqrstuvwxyz", database[0].routingNumber);
     // console.log(database);
@@ -72,22 +74,22 @@ app.post("/checkout", async (req, res) => {
     const BankAccountToken = await stripe.tokens.create(
       {
         bank_account: {
-          country: 'US',
-          currency: 'usd',
-          account_holder_name: 'Raghav Herugu',
-          account_holder_type: 'Individual',
-          routing_number: '110000000',
-          account_number: '000123456789',
+          country: "US",
+          currency: "usd",
+          account_holder_name: "Raghav Herugu",
+          account_holder_type: "Individual",
+          routing_number: "110000000",
+          account_number: "000123456789",
         },
       },
-      function(err, token) {
+      function (err, token) {
         console.error(err);
       }
     );
 
     console.log("&*&#*(&@(*$&*(@#&$*(@#&", BankAccountToken);
 
-    // console.log("Charge:", { charge });
+    console.log("Charge:", { charge });
     status = "success";
   } catch (error) {
     console.error("Error:", error);
