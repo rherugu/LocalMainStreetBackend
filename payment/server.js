@@ -19,8 +19,8 @@ app.use(function (req, res, next) {
   next();
 });
 
-// const paypal = require("./paypal");
-// app.use("/paypal", paypal);
+const paypal = require("./paypal");
+app.use("/paypal", paypal);
 
 app.get("/", (req, res) => {
   res.send("Add your Stripe Secret Key to the .require('stripe') statement!");
@@ -37,6 +37,8 @@ app.post("/checkout", async (req, res) => {
   let status;
   try {
     const { product, token } = req.body;
+
+    exports.product = { product };
 
     const customer = await stripe.customers.create({
       email: token.email,

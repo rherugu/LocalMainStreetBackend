@@ -23,5 +23,4 @@ app.get("/", (req, res) => {
   res.send("© LocalMainStreet 2020 Backend server");
 });
 
-
 module.exports = app;
