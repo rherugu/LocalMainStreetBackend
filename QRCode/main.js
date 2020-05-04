@@ -69,7 +69,7 @@ app.patch("/:mainId", async (req, res) => {
       { _id: req.params.mainId },
       {
         $set: {
-          nameq: req.body.fnameq,
+          nameq: req.body.nameq,
           balance: req.body.balance,
         },
       }
