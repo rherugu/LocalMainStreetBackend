@@ -30,10 +30,10 @@ app.use(function (req, res, next) {
 
 //Import Routes
 const shopRoute = require("./routes/Shop");
-
+const loginB = require("./routes/loginB");
 
 app.use("/shop", shopRoute);
-
+app.use("/loginB", loginB);
 
 //Routes
 app.get("/", (req, res) => {

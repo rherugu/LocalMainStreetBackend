@@ -19,6 +19,14 @@ const LoginValidation = (req) => {
   return schema.validate(req);
 };
 
+const BLoginValidation = (req) => {
+  const schema = Joi.object({
+    emailb: Joi.string().min(6).required().email(),
+    passwordb: Joi.string().min(6).required(),
+  });
+  return schema.validate(req);
+};
+
 const BusinessValidation = (req) => {
   const schema = Joi.object({
     emailb: Joi.string().min(6).required().email(),
@@ -51,3 +59,4 @@ module.exports.registerValidation = registerValidation;
 module.exports.LoginValidation = LoginValidation;
 module.exports.BusinessValidation = BusinessValidation;
 module.exports.contactValidation = contactValidation;
+module.exports.BLoginValidation = BLoginValidation;
