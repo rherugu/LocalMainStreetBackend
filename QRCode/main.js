@@ -65,6 +65,11 @@ app.delete("/:mainId", async (req, res) => {
 //Update
 app.patch("/:mainId", async (req, res) => {
   try {
+    if (Main.findById(req.params.mainId).balance <= 0) {
+      const removedMain = await Main.deleteOne({ _id: req.params.mainId });
+      res.json(removedMain);
+    }
+
     const updatedMain = await Main.updateOne(
       { _id: req.params.mainId },
       {
