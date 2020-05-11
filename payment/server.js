@@ -217,6 +217,12 @@ app.get("/authorize-oauth", async (req, res) => {
     );
 });
 
+app.post("/authorize-oauth", async (req, res) => {
+  const webhook = req.body;
+
+  console.log(webhook);
+});
+
 const saveAccountId = (id) => {
   // Save the connected account ID from the response to your database.
   console.log("Connected account ID: " + id);
@@ -288,7 +294,7 @@ app.post("/create-checkout-session", async (req, res) => {
         },
       },
       // ?session_id={CHECKOUT_SESSION_ID} means the redirect will have the session ID set as a query param
-      success_url: `${domainURL}/success.html?session_id={CHECKOUT_SESSION_ID}`,
+      success_url: `${domainURL}/?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${domainURL}`,
     });
 
