@@ -217,7 +217,7 @@ app.get("/authorize-oauth", async (req, res) => {
     );
 });
 
-app.post("/authorize-oauth", async (req, res) => {
+app.post("/authorize-oauthpost", async (req, res) => {
   const webhook = req.body;
 
   console.log(webhook);
