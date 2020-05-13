@@ -41,15 +41,6 @@ router.post("/", async (req, res) => {
 
   const hashedPassword = await bcrypt.hash(req.body.passwordb, salt);
 
-  //Hashing of the bank account information
-  const salt1 = await bcrypt.genSalt(16);
-
-  const hashedroutingNumber = await bcrypt.hash(req.body.routingNumber, salt1);
-
-  const salt2 = await bcrypt.genSalt(16);
-
-  const hashedaccountNumber = await bcrypt.hash(req.body.accountNumber, salt2);
-
   const shop = new Blogin({
     emailb: req.body.emailb,
     passwordb: hashedPassword,
@@ -59,16 +50,31 @@ router.post("/", async (req, res) => {
     description: req.body.description,
     address: req.body.address,
     phoneNumber: req.body.phoneNumber,
-    businessCatagory: req.body.businessCatagory,
-    accountHolderName: req.body.accountHolderName,
-    accountHolderType: req.body.accountHolderType,
-    routingNumber: hashedroutingNumber,
-    accountNumber: hashedaccountNumber
+    stripeAccountId: req.body.stripeAccountId,
   });
 
   try {
     const savedShop = await shop.save();
     res.json({ savedShop, message: "Success!", check: 200 });
+  } catch (err) {
+    res.json({ message: err });
+  }
+});
+
+//Update
+router.patch("/:shopId", async (req, res) => {
+  try {
+    const updatedBlogin = await Blogin.updateOne(
+      { _id: req.params.shopId },
+      {
+        $set: {
+          stripeAccountId: req.body.stripeAccountId,
+        },
+      }
+      //   { $set: { lnameq: req.body.lnameq } },
+      //   { $set: { balance: req.body.balance } }
+    );
+    res.json(updatedBlogin);
   } catch (err) {
     res.json({ message: err });
   }

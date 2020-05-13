@@ -35,21 +35,20 @@ const BloginSchema = mongoose.Schema({
   },
   businessCatagory: {
     type: String,
-    required: true,
   },
   accountHolderName: {
     type: String,
-    required: true,
   },
   accountHolderType: {
     type: String,
-    required: true,
   },
   routingNumber: {
     type: String,
-    required: true,
   },
   accountNumber: {
+    type: String,
+  },
+  stripeAccountId: {
     type: String,
     required: true,
   },

@@ -12,7 +12,22 @@ var stripeAccountNumber;
 var stripeAccountHolderName;
 var stripeAccountHolderType;
 
+var email;
+var password;
+var fname;
+var lname;
+var bname;
+var description;
+var address;
+var PhoneNumber;
+var day;
+var month;
+var year;
+
 var AccountId;
+var Account;
+var idForLink;
+
 const app = express();
 var compression = require("compression");
 app.use(compression()); //Compress all routes
@@ -159,7 +174,7 @@ app.get("/get-oauth-link", async (req, res) => {
     state,
     client_id: process.env.STRIPE_CLIENT_ID,
   });
-  const url = `https://connect.stripe.com/express/oauth/authorize?${args.toString()}`;
+  const url = `https://connect.stripe.com/express/oauth/authorize?${args.toString()}&stripe_user[email]=${email}&stripe_user[phone_number]=${PhoneNumber}&stripe_user[business_name]=${bname}&stripe_user[first_name]=${fname}&stripe_user[last_name]=${lname}&stripe_user[product_description]=${description}&stripe_user[dob_day]=${day}&stripe_user[dob_month]=${month}&stripe_user[dob_year]=${year}`;
   // res.send({ url });
   return res.send({ url });
 });
@@ -182,10 +197,25 @@ app.get("/authorize-oauth", async (req, res) => {
     .then(
       async (response) => {
         var connected_account_id = response.stripe_user_id;
-        console.log(connected_account_id);
+        console.log("connected account id", connected_account_id);
         console.log("#####", response);
         console.log("3");
         saveAccountId(connected_account_id);
+
+        Account = connected_account_id;
+
+        // const id = database[database.length - 1]._id;
+
+        // const updatedShop = await Blogin.updateOne(
+        //   { _id: id },
+        //   {
+        //     $set: {
+        //       stripeAccountId: connected_account_id,
+        //     },
+        //   }
+        //   //   { $set: { lnameq: req.body.lnameq } },
+        //   //   { $set: { balance: req.body.balance } }
+        // );
 
         // Render some HTML or redirect to a different page.
 
@@ -202,8 +232,7 @@ app.get("/authorize-oauth", async (req, res) => {
         //   type: "custom_account_verification",
         //   collect: "eventually_due",
         // });
-
-        return res.redirect(301, "https://i.stack.imgur.com/YbIni.png");
+        return res.redirect(301, "http://localhost:3000/Success");
       },
       (err) => {
         if (err.type === "StripeInvalidGrantError") {
@@ -217,6 +246,29 @@ app.get("/authorize-oauth", async (req, res) => {
     );
 });
 
+app.get("/stripeAccountId", (req, res) => {
+  res.send(Account);
+});
+
+app.post("/data", async (req, res) => {
+  const object = req.body.data;
+
+  email = object.email;
+  password = object.password;
+  fname = object.fname;
+  lname = object.lname;
+  bname = object.bname;
+  description = object.description;
+  address = object.address;
+  PhoneNumber = object.phoneNumber;
+  day = Number(object.day);
+  month = Number(object.month);
+  year = Number(object.year);
+
+  console.log(object);
+  console.log(object.fname);
+});
+
 app.post("/authorize-oauthpost", async (req, res) => {
   const webhook = req.body;
 
@@ -226,6 +278,7 @@ app.post("/authorize-oauthpost", async (req, res) => {
 const saveAccountId = (id) => {
   // Save the connected account ID from the response to your database.
   console.log("Connected account ID: " + id);
+
   AccountId = id;
 };
 
@@ -268,7 +321,8 @@ app.post("/create-checkout-session", async (req, res) => {
   try {
     const domainURL = req.headers.referer;
 
-    const { quantity, locale, product } = req.body;
+    const { quantity, locale, product } = await req.body;
+    console.log(product.id);
     // Create new Checkout Session for the order
     // Other optional params include:
     // [billing_address_collection] - to display billing address details on the page
@@ -276,6 +330,7 @@ app.post("/create-checkout-session", async (req, res) => {
     // [payment_intent_data] - lets capture the payment later
     // [customer_email] - lets you prefill the email input in the form
     // For full details see https://stripe.com/docs/api/checkout/sessions/create
+
     const session = await stripe.checkout.sessions.create({
       payment_method_types: process.env.PAYMENT_METHODS.split(", "),
       locale: locale,
@@ -290,7 +345,7 @@ app.post("/create-checkout-session", async (req, res) => {
       ],
       payment_intent_data: {
         transfer_data: {
-          destination: "acct_1GgFgCEzJ9ZSYH6H",
+          destination: product.id,
         },
       },
       // ?session_id={CHECKOUT_SESSION_ID} means the redirect will have the session ID set as a query param
@@ -298,17 +353,17 @@ app.post("/create-checkout-session", async (req, res) => {
       cancel_url: `${domainURL}`,
     });
 
-    stripe.transfers.create(
-      {
-        amount: quantity * 100,
-        currency: process.env.CURRENCY,
-        destination: "acct_1GgFgCEzJ9ZSYH6H",
-        transfer_group: "ORDER_95",
-      },
-      function (err, transfer) {
-        console.log(err);
-      }
-    );
+    // stripe.transfers.create(
+    //   {
+    //     amount: quantity * 100,
+    //     currency: process.env.CURRENCY,
+    //     destination: "acct_1GgFgCEzJ9ZSYH6H",
+    //     transfer_group: "ORDER_95",
+    //   },
+    //   function (err, transfer) {
+    //     console.log(err);
+    //   }
+    // );
 
     res.send({
       sessionId: session.id,
@@ -316,6 +371,18 @@ app.post("/create-checkout-session", async (req, res) => {
   } catch (error) {
     console.log(error);
   }
+});
+
+app.post("/dashboard", async (req, res) => {
+  idForLink = await req.body;
+
+  return console.log(idForLink);
+});
+
+app.get("/dashboard", async (req, res) => {
+  const link = await stripe.accounts.createLoginLink(idForLink.stripeAccountId);
+
+  return res.send(link);
 });
 
 // Webhook handler for asynchronous events.

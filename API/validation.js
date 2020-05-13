@@ -34,14 +34,15 @@ const BusinessValidation = (req) => {
     fnameb: Joi.string().min(1).required(),
     lnameb: Joi.string().min(1).required(),
     bname: Joi.string().min(1).required(),
-    description: Joi.string().min(150).max(1000).required(),
+    description: Joi.string().min(10).max(1000).required(),
     address: Joi.string().min(3).required(),
     phoneNumber: Joi.string().min(3).required(),
-    businessCatagory: Joi.string().min(1).required(),
-    accountHolderName: Joi.string().min(3).required(),
-    accountHolderType: Joi.string().min(3).required(),
-    routingNumber: Joi.string().min(3).required(),
-    accountNumber: Joi.string().min(3).required(),
+    businessCatagory: Joi.string().min(1),
+    accountHolderName: Joi.string().min(3),
+    accountHolderType: Joi.string().min(3),
+    routingNumber: Joi.string().min(3),
+    accountNumber: Joi.string().min(3),
+    stripeAccountId: Joi.string().required(),
   });
   return schema.validate(req);
 };

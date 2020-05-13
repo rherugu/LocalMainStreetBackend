@@ -37,9 +37,17 @@ router.post("/", async (req, res) => {
   const token = jwt.sign({ _id: business._id }, process.env.TOKEN_SECRET, {
     expiresIn: "3h",
   });
-  res.header("auth-token", token).send(token);
 
-  // res.send('Logged In!');
+  const stripeId = await Blogin.findOne({ emailb: req.body.emailb });
+
+  const tokenmain = await {
+    token: token,
+    stripeAccountId: stripeId.stripeAccountId,
+  };
+
+  res.header("auth-token", token).send(tokenmain);
+
+  // res.send(stripeId);
 });
 
 module.exports = router;
