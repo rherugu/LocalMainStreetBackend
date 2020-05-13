@@ -193,6 +193,7 @@ app.get("/authorize-oauth", async (req, res) => {
     .token({
       grant_type: "authorization_code",
       code,
+      assert_capabilities: ["transfers"],
     })
     .then(
       async (response) => {
