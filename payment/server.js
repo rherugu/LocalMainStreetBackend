@@ -237,6 +237,7 @@ app.get("/authorize-oauth", async (req, res) => {
       },
       (err) => {
         if (err.type === "StripeInvalidGrantError") {
+          console.log(err);
           return res
             .status(400)
             .json({ error: "Invalid authorization code: " + code });
