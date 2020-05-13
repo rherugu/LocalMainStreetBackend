@@ -30,7 +30,7 @@ router.post("/", async (req, res) => {
     return res.send({
       message: error.details[0].message,
     });
-
+  //Both emails checking
   //Checking if the user is already in the database
   const emailExist = await Post.findOne({ email: req.body.emailb });
   const emailExistb = await Blogin.findOne({ emailb: req.body.emailb });
