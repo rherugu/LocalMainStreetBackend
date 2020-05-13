@@ -8,6 +8,8 @@ const app = express();
 
 const Post = require("../models/Post");
 
+const Blogin = require("../models/Blogin");
+
 const bodyParser = require("body-parser");
 
 const Joi = require("@hapi/joi");
@@ -17,7 +19,6 @@ const { registerValidation, LoginValidation } = require("../validation.js");
 const bcrypt = require("bcryptjs");
 
 const jwt = require("jsonwebtoken");
-
 
 // mongoose.connect(
 //   process.env.DB_CONNECTION,
@@ -49,7 +50,8 @@ router.post("/", async (req, res) => {
 
   //Checking if the user is already in the database
   const emailExist = await Post.findOne({ email: req.body.email });
-  if (emailExist)
+  const emailExistB = await Blogin.findOne({ emailb: req.body.email });
+  if (emailExist || emailExistB)
     return res.send("Email already exists. Please choose a different email.");
 
   //Hashing of the passwords
