@@ -10,6 +10,8 @@ const bcrypt = require("bcryptjs");
 
 const jwt = require("jsonwebtoken");
 
+const Post = require("../models/Post");
+
 const { BusinessValidation } = require("../validation.js");
 
 router.get("/", verify, async (req, res) => {
@@ -30,8 +32,9 @@ router.post("/", async (req, res) => {
     });
 
   //Checking if the user is already in the database
+  const emailExist = await Post.findOne({ email: req.body.emailb });
   const emailExistb = await Blogin.findOne({ emailb: req.body.emailb });
-  if (emailExistb)
+  if (emailExistb || emailExist)
     return res.send({
       message: "Email already exists. Please choose a different email.",
     });
