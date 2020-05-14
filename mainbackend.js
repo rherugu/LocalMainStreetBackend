@@ -1,5 +1,5 @@
 //© COPYRIGHT LocalMainStreet 2020
-//All rights reserved
+//All rights reserved 2020
 
 const express = require("express");
 
