@@ -378,11 +378,25 @@ app.post("/create-checkout-session", async (req, res) => {
 app.post("/dashboard", async (req, res) => {
   idForLink = await req.body;
 
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, Content-Type, Accept, Authorization, X-Request-With"
+  );
+
   return console.log(idForLink);
 });
 
 app.get("/dashboard", async (req, res) => {
   const link = await stripe.accounts.createLoginLink(idForLink.stripeAccountId);
+
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, Content-Type, Accept, Authorization, X-Request-With"
+  );
 
   return res.send(link);
 });
