@@ -378,7 +378,7 @@ app.post("/create-checkout-session", async (req, res) => {
 app.post("/dashboard", async (req, res) => {
   idForLink = await req.body;
 
-  return console.log(idForLink);
+  return console.log(idForLink.stripeAccountId);
 });
 
 app.get("/dashboard", async (req, res) => {
