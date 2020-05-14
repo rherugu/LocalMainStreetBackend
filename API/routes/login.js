@@ -6,11 +6,13 @@ const app = express();
 
 const Users = require("../models/Post");
 
+const Blogin = require("../models/Blogin");
+
 const bodyParser = require("body-parser");
 
 const Joi = require("@hapi/joi");
 
-const { registerValidation, LoginValidation } = require("../validation.js");
+const { BusinessValidation, LoginValidation } = require("../validation.js");
 
 const bcrypt = require("bcryptjs");
 
@@ -30,22 +32,59 @@ router.get("/", async (req, res) => {
 router.post("/", async (req, res) => {
   //VAILDATION
   const { error } = LoginValidation(req.body);
-  if (error) return res.status(404).send(error.details[0].message);
-
-  //Checking if the email exists
+  const { errorB } = BusinessValidation(req.body);
+  if (error || errorB) return res.status(404).send(error.details[0].message);
 
   const user = await Users.findOne({ email: req.body.email });
-  if (!user) return res.status(404).send("Email or password is invalid.");
-  const { email, password, fname, lname } = user;
+  const userB = await Blogin.findOne({ emailb: req.body.email });
+  const stripeId = await Blogin.findOne({ emailb: req.body.email });
+
+  if (!user && !userB)
+    return res.status(404).send("Email or password is invalid.");
+
+  if (!user) {
+    const { emailb, passwordb, fnameb, lnameb } = userB;
+    const validPassB = await bcrypt.compare(req.body.password, passwordb);
+    if (!validPassB)
+      return res.status(404).send("Email or password is invalid.");
+
+    const tokenB = jwt.sign({ _id: userB._id }, process.env.TOKEN_SECRET, {
+      expiresIn: "3h",
+    });
+
+    const tokenBAndURL = {
+      token: tokenB,
+      url: "/Dashboard",
+      stripeId: stripeId.stripeAccountId,
+    };
+
+    res.header("auth-token", tokenB).send(tokenBAndURL);
+  } else if (!userB) {
+    const { email, password, fname, lname } = user;
+    const validPass = await bcrypt.compare(req.body.password, password);
+    if (!validPass)
+      return res.status(404).send("Email or password is invalid.");
+
+    const token = jwt.sign({ _id: user._id }, process.env.TOKEN_SECRET, {
+      expiresIn: "3h",
+    });
+
+    const tokenBAndURL = {
+      token: token,
+      url: "/Shop",
+    };
+
+    res.header("auth-token", token).send(tokenBAndURL);
+  }
+
   //Check if password is correct
-  const validPass = await bcrypt.compare(req.body.password, password);
-  if (!validPass) return res.status(404).send("Email or password is invalid.");
+
+  // console.log(validPassB);
+
+  // if (!validPass || !validPassB)
+  //   return res.status(404).send("Email or password is invalid.");
 
   //Create and assign a token
-  const token = jwt.sign({ _id: user._id }, process.env.TOKEN_SECRET, {
-    expiresIn: "3h",
-  });
-  res.header("auth-token", token).send(token);
 
   // res.send('Logged In!');
 });
