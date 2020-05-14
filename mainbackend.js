@@ -1,4 +1,5 @@
 //© COPYRIGHT LocalMainStreet 2020
+//All rights reserved
 
 const express = require("express");
 
@@ -29,7 +30,6 @@ mongoose.connect(
     )
 );
 
-
-app.listen(process.env.PORT || 3006, '0.0.0.0', () => {
+app.listen(process.env.PORT || 3006, "0.0.0.0", () => {
   console.log("mainbackend up and running");
-}); 
+});
