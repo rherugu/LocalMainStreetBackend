@@ -382,7 +382,7 @@ app.post("/dashboard", async (req, res) => {
 });
 
 app.get("/dashboard", async (req, res) => {
-  const link = await stripe.accounts.createLoginLink(idForLink);
+  const link = await stripe.accounts.createLoginLink(idForLink.stripeAccountId);
 
   return res.send(link);
 });
