@@ -453,10 +453,13 @@ app.post(
       console.log(nameq);
       console.log(balance);
 
+      const id = await Main.findOne({ emailq: emailq });
+
       var qrcodeDataParsed = {
         emailq: emailq,
         nameq: nameq,
         balance: balance,
+        id: id._id,
       };
 
       var qrcodeData = JSON.stringify(qrcodeDataParsed);
