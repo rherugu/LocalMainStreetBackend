@@ -6,7 +6,23 @@ const creds = require("./config");
 const Joi = require("@hapi/joi");
 const { contactValidation } = require("../API/validation");
 const helmet = require("helmet");
+const hbs = require("nodemailer-express-handlebars");
+var phoneNumber;
+
+require("dotenv/config");
+// const accountSid = process.env.accountSid;
+// const authToken = process.env.authToken;
+// const client = require("twilio")(accountSid, authToken);
+
+// client.messages.create({
+//   to: "+17328038584",
+//   from: "+12513129817",
+//   body: "test",
+// });
+
 var compression = require("compression");
+
+var qrcodelink;
 
 router.use(compression()); //Compress all routes
 router.use(helmet());
@@ -29,7 +45,34 @@ var transport = {
   },
 };
 
+var transport2 = {
+  // service: "gmail",
+  host: "smtp.zoho.eu", // Don’t forget to replace with the SMTP host of your provider
+  port: 465,
+  secure: true,
+  auth: {
+    user: creds.USERTWO,
+    pass: creds.PASSTWO,
+  },
+};
+
 var transporter = nodemailer.createTransport(transport);
+var transporter2 = nodemailer.createTransport(transport2);
+
+// transporter.use(
+//   "compile",
+//   hbs({
+//     // viewEngine: "express-handlebars",
+//     viewEngine: {
+//       extName: "express-handlebars",
+//       partialsDir: "./views/",
+//       layoutsDir: "./views/",
+//       defaultLayout: "email.body.hbs",
+//     },
+//     viewPath: "./views/",
+//     extName: "express-handlebars",
+//   })
+// );
 
 transporter.verify((error, success) => {
   if (error) {
@@ -49,14 +92,15 @@ router.post("/send", (req, res, next) => {
   var content = `name: ${name} \n email: ${email} \n message: ${message} `;
 
   var mail = {
-    from: name,
-    to: "rherugu@gmail.com", // Change to email address that you want to receive messages on
+    from: email,
+    to: "info@localmainstreet.com", // Change to email address that you want to receive messages on
     subject: "New Message from LocalMainStreet Contact Form",
     text: content,
   };
 
-  transporter.sendMail(mail, (err, data) => {
+  transporter2.sendMail(mail, (err, data) => {
     if (err) {
+      console.log(err);
       res.json({
         status: "fail",
       });
@@ -64,9 +108,9 @@ router.post("/send", (req, res, next) => {
       res.json({
         status: "success",
       });
-      transporter.sendMail(
+      transporter2.sendMail(
         {
-          from: "rherugu@gmail.com",
+          from: "info@localmainstreet.com",
           to: email,
           subject: "Submission was successful",
           text:
@@ -82,6 +126,85 @@ router.post("/send", (req, res, next) => {
       );
     }
   });
+});
+
+router.post("/getqrcode", (req, res) => {
+  qrcodelink = req.body.qrcode;
+
+  return res.send("Success!");
+});
+
+router.post("/sendqrcode", (req, res, next) => {
+  // const { error } = contactValidation(req.body);
+  // if (error) return res.send(error.details[0].message);
+
+  var email = req.body.emailq;
+  var content = `Hello! You have bought a QR Code in localmainstreet.com.`;
+
+  var mail = {
+    from: "info@localmainstreet.com",
+    to: email, // Change to email address that you want to receive messages on
+    subject: "QR Code",
+    text: content,
+    attachments: [
+      {
+        path: qrcodelink,
+      },
+    ],
+    // template: "qrcode",
+  };
+
+  transporter2.sendMail(mail, (err, data) => {
+    if (err) {
+      console.log(err);
+      res.json({
+        status: "fail",
+        err: err,
+      });
+    } else {
+      res.json({
+        status: "success",
+      });
+      // transporter.sendMail(
+      //   {
+      //     from: "rherugu@gmail.com",
+      //     to: email,
+      //     subject: "QR Code",
+      //     text:
+      //       "Thank you for contacting us! We appreciate your feedback and will strive to get better!",
+      //   },
+      //   function (error, info) {
+      //     if (error) {
+      //       console.error(error);
+      //     } else {
+      //       console.log("Message sent: " + info.response);
+      //     }
+      //   }
+      // );
+    }
+  });
+});
+
+router.post("/phone", (req, res) => {
+  phoneNumber = req.body.phone;
+  // try {
+  var TMClient = require("textmagic-rest-client");
+  var c = new TMClient("raghavherugu", "FXHBVMB4bVCsbWq8l2yKa2iFCxakzO");
+
+  c.Messages.send(
+    {
+      text: `Here is your url for the QR Code: ${qrcodelink}`,
+      phones: `+1${phoneNumber}`,
+    },
+    function (err, res) {
+      console.log("Messages.send()", err, res);
+    }
+  );
+  // } catch (err) {
+  //   return res.send(err);
+  // }
+
+  return res.send(phoneNumber);
 });
 
 const app = express();

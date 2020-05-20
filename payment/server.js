@@ -5,6 +5,10 @@ const uuid = require("uuid/v4");
 const helmet = require("helmet");
 const Blogin = require("../API/models/Blogin");
 const bcrypt = require("bcryptjs");
+const bodyParser = require("body-parser");
+const Cryptr = require("cryptr");
+const cryptr = new Cryptr(process.env.qrCodeSecretKey);
+const Main = require("../QRCode/models/Main");
 
 var stripeBankInfo;
 var stripeRoutingNumber;
@@ -28,6 +32,13 @@ var AccountId;
 var Account;
 var idForLink;
 
+var nameq;
+var emailq;
+var balance;
+
+var encryption;
+var decryption;
+
 const app = express();
 var compression = require("compression");
 app.use(compression()); //Compress all routes
@@ -43,18 +54,6 @@ app.use(function (req, res, next) {
   );
   next();
 });
-
-// stripe.accounts.create(
-//   {
-//     type: "custom",
-//     country: "US",
-//     email: "theherugu@example.com",
-//     requested_capabilities: ["card_payments", "transfers"],
-//   },
-//   function (err, account) {
-//     console.log(err);
-//   }
-// );
 
 const paypal = require("./paypal");
 app.use("/paypal", paypal);
@@ -181,7 +180,8 @@ app.get("/get-oauth-link", async (req, res) => {
 
 app.get("/authorize-oauth", async (req, res) => {
   const { code, state } = req.query;
-  // // Assert the state matches the state you provided in the OAuth link (optional).
+  // // Assert the state matches the state you provided
+  // in the OAuth link (optional).
   // if (req.session.state !== state) {
   //   return res
   //     .status(403)
@@ -327,11 +327,13 @@ app.post("/create-checkout-session", async (req, res) => {
     console.log(product.id);
     // Create new Checkout Session for the order
     // Other optional params include:
-    // [billing_address_collection] - to display billing address details on the page
+    // [billing_address_collection] - to display billing address
+    // details on the page
     // [customer] - if you have an existing Stripe Customer ID
     // [payment_intent_data] - lets capture the payment later
     // [customer_email] - lets you prefill the email input in the form
-    // For full details see https://stripe.com/docs/api/checkout/sessions/create
+    // For full details see
+    // https://stripe.com/docs/api/checkout/sessions/create
 
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
@@ -342,7 +344,9 @@ app.post("/create-checkout-session", async (req, res) => {
           images: ["https://image.flaticon.com/icons/svg/2331/2331813.svg"],
           quantity: 1,
           currency: process.env.CURRENCY,
-          amount: quantity * 100, // Keep the amount on the server to prevent customers from manipulating on client
+          amount: quantity * 100, // Keep the
+          // amount on the server to prevent customers
+          // from manipulating on client
         },
       ],
       payment_intent_data: {
@@ -350,7 +354,8 @@ app.post("/create-checkout-session", async (req, res) => {
           destination: product.id,
         },
       },
-      // ?session_id={CHECKOUT_SESSION_ID} means the redirect will have the session ID set as a query param
+      // ?session_id={CHECKOUT_SESSION_ID}\
+      // means the redirect will have the session ID set as a query param
       success_url: `${domainURL}/?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${domainURL}`,
     });
@@ -375,10 +380,10 @@ app.post("/create-checkout-session", async (req, res) => {
   }
 });
 
-app.post("/dashboard", async (req, res) => {
-  idForLink = await req.body;
+app.post("/dashboard", (req, res) => {
+  idForLink = req.body;
 
-  return console.log(idForLink.stripeAccountId);
+  return res.send(idForLink.stripeAccountId);
 });
 
 app.get("/dashboard", async (req, res) => {
@@ -387,43 +392,130 @@ app.get("/dashboard", async (req, res) => {
   return res.send(link);
 });
 
-// Webhook handler for asynchronous events.
-app.post("/webhook", async (req, res) => {
-  let data;
-  let eventType;
-  // Check if webhook signing is configured.
-  if (process.env.STRIPE_WEBHOOK_SECRET) {
-    // Retrieve the event by verifying the signature using the raw body and secret.
-    let event;
-    let signature = req.headers["stripe-signature"];
+app.post("/getInfo", (req, res) => {
+  const data = req.body;
+  console.log(data);
 
-    try {
-      event = stripe.webhooks.constructEvent(
-        req.rawBody,
-        signature,
-        process.env.STRIPE_WEBHOOK_SECRET
-      );
-    } catch (err) {
-      console.log(`⚠️  Webhook signature verification failed.`);
-      return res.sendStatus(400);
-    }
-    // Extract the object from the event.
-    data = event.data;
-    eventType = event.type;
-  } else {
-    // Webhook signing is recommended, but if the secret is not configured in `config.js`,
-    // retrieve the event data directly from the request body.
-    data = req.body.data;
-    eventType = req.body.type;
-  }
+  nameq = data.nameq;
+  console.log(nameq);
+  emailq = data.emailq;
+  console.log(emailq);
+  balance = data.balance;
+  console.log(balance);
 
-  if (eventType === "checkout.session.completed") {
-    console.log(`🔔  Payment received!`);
-  }
-
-  res.sendStatus(200);
+  res.send("Success!");
 });
 
-// app.listen(8080, () => console.log("Connected!"));
+// Webhook handler for asynchronous events.
+app.post(
+  "/webhook",
+  bodyParser.raw({ type: "application/json" }),
+  async (req, res) => {
+    let data;
+    let eventType;
+    // Check if webhook signing is configured.
+    if (process.env.STRIPE_WEBHOOK_SECRET) {
+      // Retrieve the event by verifying the signature using the
+      // raw body and secret.
+      let event;
+      let signature = req.headers["stripe-signature"];
+      var body = req.body;
+
+      try {
+        // event = stripe.webhooks.constructEvent(
+        //   body,
+        //   signature,
+        //   process.env.STRIPE_WEBHOOK_SECRET
+        // );
+        // console.log(signature);
+        event = body;
+      } catch (err) {
+        console.error(
+          `⚠️  ☣️  ☢️     Webhook signature verification failed. :( \n${err}`
+        );
+        return res.sendStatus(400);
+      }
+      // Extract the object from the event.
+      data = event.data;
+      eventType = event.type;
+    } else {
+      // Webhook signing is recommended, but if the secret is not
+      // configured in `config.js`, retrieve the event data directly
+      // from the request body.
+      data = req.body.data;
+      eventType = req.body.type;
+    }
+
+    if (eventType === "checkout.session.completed") {
+      console.log(`🔔  💰  💵  💸  🤑    Payment received!`);
+
+      console.log(emailq);
+      console.log(nameq);
+      console.log(balance);
+
+      var qrcodeDataParsed = {
+        emailq: emailq,
+        nameq: nameq,
+        balance: balance,
+      };
+
+      var qrcodeData = JSON.stringify(qrcodeDataParsed);
+      console.log(qrcodeData);
+
+      const encryptedData = cryptr.encrypt(qrcodeData);
+      console.log(encryptedData);
+
+      encryption = encryptedData;
+
+      const qrcode = new Main({
+        encData: encryptedData,
+      });
+
+      try {
+        const savedQRCode = await qrcode.save();
+        return res.json(qrcode);
+      } catch (err) {
+        return res.json({ message: err });
+      }
+    }
+
+    return res.sendStatus(200);
+  }
+);
+
+app.get("/encryption", (req, res) => {
+  // if (encryption) {
+  //   res.json({
+  //     message: encryption,
+  //     status: "success",
+  //   });
+  // } else {
+  //   res.json({
+  //     message: "User has not bought anthing yet.",
+  //     status: "failure",
+  //   });
+  // }
+
+  enc: if (encryption === undefined || !encryption) {
+    return res.json({
+      message: "User has not bought anthing yet.",
+      status: "failure",
+    });
+  } else {
+    res.json({
+      message: encryption,
+      status: "success",
+    });
+    encryption = undefined;
+
+    break enc;
+  }
+});
+
+app.get("/decryption", (req, res) => {
+  decryption = cryptr.decrypt(encryption);
+
+  res.send(decryption);
+});
 
 module.exports = app;

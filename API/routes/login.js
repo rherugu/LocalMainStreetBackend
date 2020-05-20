@@ -72,6 +72,9 @@ router.post("/", async (req, res) => {
     const tokenBAndURL = {
       token: token,
       url: "/Shop",
+      email: email,
+      fname: fname,
+      lname: lname,
     };
 
     res.header("auth-token", token).send(tokenBAndURL);
