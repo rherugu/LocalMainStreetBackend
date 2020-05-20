@@ -165,22 +165,6 @@ router.post("/sendqrcode", (req, res, next) => {
       res.json({
         status: "success",
       });
-      // transporter.sendMail(
-      //   {
-      //     from: "rherugu@gmail.com",
-      //     to: email,
-      //     subject: "QR Code",
-      //     text:
-      //       "Thank you for contacting us! We appreciate your feedback and will strive to get better!",
-      //   },
-      //   function (error, info) {
-      //     if (error) {
-      //       console.error(error);
-      //     } else {
-      //       console.log("Message sent: " + info.response);
-      //     }
-      //   }
-      // );
     }
   });
 });

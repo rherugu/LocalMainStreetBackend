@@ -512,10 +512,14 @@ app.get("/encryption", (req, res) => {
   }
 });
 
-app.get("/decryption", (req, res) => {
-  decryption = cryptr.decrypt(encryption);
+app.post("/decryption", (req, res) => {
+  const data = req.body.data;
 
-  res.send(decryption);
+  const decryption = cryptr.decrypt(data);
+
+  return res.json({
+    decryptedData: decryption,
+  });
 });
 
 module.exports = app;
