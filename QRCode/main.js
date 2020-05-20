@@ -93,7 +93,7 @@ app.patch("/:mainId", async (req, res) => {
   }
 });
 //Update 2
-app.patch("/:mainEmailq", async (req, res) => {
+app.patch("/patch/:mainEmailq", async (req, res) => {
   try {
     const updatedMain = await Main.updateOne(
       { emailq: req.params.mainEmailq },
@@ -103,9 +103,11 @@ app.patch("/:mainEmailq", async (req, res) => {
         },
       }
     );
+
     res.json(updatedMain);
   } catch (err) {
     res.json({ message: err });
+    console.log(err);
   }
 });
 
