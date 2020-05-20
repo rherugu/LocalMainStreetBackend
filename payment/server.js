@@ -518,7 +518,7 @@ app.post("/encryptionApp", (req, res) => {
   const encryption = cryptr.encrypt(data);
 
   return res.json({
-    encryptedData: JSON.parse(encryption),
+    encryptedData: encryption,
   });
 });
 
