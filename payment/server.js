@@ -512,6 +512,16 @@ app.get("/encryption", (req, res) => {
   }
 });
 
+app.post("/encryptionApp", (req, res) => {
+  const data = req.body.data;
+
+  const encryption = cryptr.encrypt(data);
+
+  return res.json({
+    encryptedData: JSON.parse(encryption),
+  });
+});
+
 app.post("/decryption", (req, res) => {
   const data = req.body.data;
 
