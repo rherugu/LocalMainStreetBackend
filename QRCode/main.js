@@ -92,5 +92,21 @@ app.patch("/:mainId", async (req, res) => {
     res.json({ message: err });
   }
 });
+//Update 2
+app.patch("/:mainEmailq", async (req, res) => {
+  try {
+    const updatedMain = await Main.updateOne(
+      { emailq: req.params.mainEmailq },
+      {
+        $set: {
+          encData: req.body.encData,
+        },
+      }
+    );
+    res.json(updatedMain);
+  } catch (err) {
+    res.json({ message: err });
+  }
+});
 
 module.exports = app;
