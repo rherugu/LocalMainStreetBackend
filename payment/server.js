@@ -39,6 +39,8 @@ var balance;
 var encryption;
 var decryption;
 
+var qrcodeId;
+
 const app = express();
 var compression = require("compression");
 app.use(compression()); //Compress all routes
@@ -473,6 +475,8 @@ app.post(
 
       try {
         const savedQRCode = await qrcode.save();
+        console.log(savedQRCode._id);
+        qrcodeId = savedQRCode._id;
         return res.json(qrcode);
       } catch (err) {
         return res.json({ message: err });
@@ -482,6 +486,10 @@ app.post(
     return res.sendStatus(200);
   }
 );
+
+app.get("/getId", (req, res) => {
+  return res.send(qrcodeId);
+});
 
 app.get("/encryption", (req, res) => {
   // if (encryption) {
