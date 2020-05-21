@@ -93,10 +93,10 @@ app.patch("/:mainId", async (req, res) => {
   }
 });
 //Update 2
-app.patch("/patch/:mainEmailq", async (req, res) => {
+app.patch("/patch/:mainEncData", async (req, res) => {
   try {
     const updatedMain = await Main.updateOne(
-      { emailq: req.params.mainEmailq },
+      { encData: req.params.mainEncData },
       {
         $set: {
           encData: req.body.encData,
