@@ -534,6 +534,7 @@ app.post("/encryptionApp", (req, res) => {
 
 app.post("/decryption", (req, res) => {
   const data = req.body.data;
+  console.log(data);
 
   const decryption = cryptr.decrypt(data);
 
