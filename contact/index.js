@@ -35,15 +35,15 @@ router.get("/send", (req, res) => {
   res.send("Contact form POST REQUEST for /send");
 });
 
-var transport = {
-  service: "gmail",
-  host: "smtp.gmail.com", // Don’t forget to replace with the SMTP host of your provider
-  port: 587,
-  auth: {
-    user: creds.USER,
-    pass: creds.PASS,
-  },
-};
+// var transport = {
+//   service: "gmail",
+//   host: "smtp.gmail.com", // Don’t forget to replace with the SMTP host of your provider
+//   port: 587,
+//   auth: {
+//     user: creds.USER,
+//     pass: creds.PASS,
+//   },
+// };
 
 var transport2 = {
   // service: "gmail",
@@ -51,12 +51,12 @@ var transport2 = {
   port: 465,
   secure: true,
   auth: {
-    user: creds.USERTWO,
-    pass: creds.PASSTWO,
+    user: creds.USER,
+    pass: creds.PASS,
   },
 };
 
-var transporter = nodemailer.createTransport(transport);
+// var transporter = nodemailer.createTransport(transport);
 var transporter2 = nodemailer.createTransport(transport2);
 
 // transporter.use(
@@ -74,7 +74,7 @@ var transporter2 = nodemailer.createTransport(transport2);
 //   })
 // );
 
-transporter.verify((error, success) => {
+transporter2.verify((error, success) => {
   if (error) {
     console.error(error);
   } else {

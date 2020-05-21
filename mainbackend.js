@@ -22,14 +22,20 @@ app.get("/", (req, res) => {
 mongoose.connect(
   String(process.env.DB_CONNECTION),
 
-  { useNewUrlParser: true, useUnifiedTopology: true },
-
-  () =>
-    console.log(
-      "Connection to the MongoDB server-side database was successful."
-    )
+  { useNewUrlParser: true, useUnifiedTopology: true }
 );
+mongoose.connection.on("connected", function () {
+  console.info("Connected!\n\n");
+});
+mongoose.connection.on("error", function (err) {
+  console.error(`ERROR!!! The error is: ${err}\n\n`);
+});
+mongoose.connection.on("disconnected", function () {
+  console.warn(
+    "The connection has been lost. This is because it got disconnected.\n\n"
+  );
+});
 
-app.listen(process.env.PORT || 3006, "0.0.0.0", () => {
+app.listen(process.env.PORT || 3003, "0.0.0.0", () => {
   console.log("mainbackend up and running");
 });

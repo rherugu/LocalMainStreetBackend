@@ -477,8 +477,10 @@ app.post(
         const savedQRCode = await qrcode.save();
         console.log(savedQRCode._id);
         encryption = savedQRCode;
+        console.log(encryption);
         return res.json(qrcode);
       } catch (err) {
+        console.err(err);
         return res.json({ message: err });
       }
     }
