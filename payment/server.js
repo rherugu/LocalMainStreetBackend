@@ -467,7 +467,7 @@ app.post(
       const encryptedData = cryptr.encrypt(qrcodeData);
       console.log(encryptedData);
 
-      encryption = encryptedData;
+      // encryption = encryptedData;
 
       const qrcode = new Main({
         encData: encryptedData,
@@ -476,7 +476,7 @@ app.post(
       try {
         const savedQRCode = await qrcode.save();
         console.log(savedQRCode._id);
-        // encryption = savedQRCode;
+        encryption = savedQRCode;
         console.log(encryption);
         return res.json(qrcode);
       } catch (err) {
