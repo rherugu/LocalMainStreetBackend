@@ -56,6 +56,15 @@ app.get("/:mainId", async (req, res) => {
   }
 });
 
+app.get("/:mainEncData", async (req, res) => {
+  try {
+    const main = await Main.findOne({ encData: req.params.mainEncData });
+    res.json(main);
+  } catch (err) {
+    res.json({ message: err });
+  }
+});
+
 //Delete
 app.delete("/:mainId", async (req, res) => {
   try {
