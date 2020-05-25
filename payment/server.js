@@ -471,6 +471,7 @@ app.post(
         emailq: emailq,
         nameq: nameq,
         balance: balance,
+        businessName: businessName,
       };
 
       var qrcodeData = JSON.stringify(qrcodeDataParsed);

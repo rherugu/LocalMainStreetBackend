@@ -27,7 +27,7 @@ router.post("/", async (req, res) => {
 
   const business = await Blogin.findOne({ emailb: req.body.emailb });
   if (!business) return res.status(404).send("emailb or passwordb is invalid.");
-  const { emailb, passwordb, fname, lname } = business;
+  const { emailb, bname, passwordb, fname, lname } = business;
   //Check if passwordb is correct
   const validPass = await bcrypt.compare(req.body.passwordb, passwordb);
   if (!validPass)
@@ -43,6 +43,7 @@ router.post("/", async (req, res) => {
   const tokenmain = await {
     token: token,
     stripeAccountId: stripeId.stripeAccountId,
+    bname: bname,
   };
 
   res.header("auth-token", token).send(tokenmain);
