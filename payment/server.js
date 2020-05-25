@@ -41,6 +41,9 @@ var decryption;
 
 var qrcodeId;
 
+var businessName;
+var amountPaid;
+
 const app = express();
 var compression = require("compression");
 app.use(compression()); //Compress all routes
@@ -337,6 +340,9 @@ app.post("/create-checkout-session", async (req, res) => {
     // For full details see
     // https://stripe.com/docs/api/checkout/sessions/create
 
+    businessName = product.bname;
+    amountPaid = quantity;
+
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
       locale: locale,
@@ -422,6 +428,7 @@ app.post(
       let event;
       let signature = req.headers["stripe-signature"];
       var body = req.body;
+      var e;
 
       try {
         // event = stripe.webhooks.constructEvent(
@@ -440,12 +447,14 @@ app.post(
       // Extract the object from the event.
       data = event.data;
       eventType = event.type;
+      e = event;
     } else {
       // Webhook signing is recommended, but if the secret is not
       // configured in `config.js`, retrieve the event data directly
       // from the request body.
       data = req.body.data;
       eventType = req.body.type;
+      e = req.body;
     }
 
     if (eventType === "checkout.session.completed") {
@@ -454,6 +463,9 @@ app.post(
       console.log(emailq);
       console.log(nameq);
       console.log(balance);
+      console.log("event!!", e);
+      console.log("businessName: ", businessName);
+      console.log("amountPaid: ", amountPaid);
 
       var qrcodeDataParsed = {
         emailq: emailq,
@@ -515,6 +527,8 @@ app.get("/encryption", (req, res) => {
     res.json({
       message: encryption,
       status: "success",
+      businessName: businessName,
+      amountPaid: amountPaid,
     });
     encryption = undefined;
 

@@ -83,4 +83,33 @@ router.patch("/:shopId", async (req, res) => {
   }
 });
 
+router.post("/search", async (req, res) => {
+  const query = req.body.query;
+
+  var result;
+
+  try {
+    const regex = new RegExp(`${query}`, "i");
+    console.log(regex);
+    result = await Blogin.find({
+      bname: { $regex: regex },
+      // function(err) {
+      //   if (err) return err;
+      //   console.log(query);
+      // },
+    });
+
+    res.json({
+      result: result,
+    });
+  } catch (err) {
+    console.error(err);
+    res.json({
+      message: "Error",
+      err: err,
+      query: query,
+    });
+  }
+});
+
 module.exports = router;

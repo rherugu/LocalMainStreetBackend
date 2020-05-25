@@ -7,6 +7,7 @@ const registerValidation = (req) => {
     password: Joi.string().min(6).required(),
     fname: Joi.string().min(1).required(),
     lname: Joi.string().min(1).required(),
+    businesses: Joi.array(),
   });
   return schema.validate(req);
 };
