@@ -1,0 +1,63 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "backend for LocalMainStreet",
+  "main": "mainbackend.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "npm install && node mainbackend.js"
+  },
+  "dependencies": {
+    "@babel/compat-data": "^7.8.0",
+    "@dogstudio/highway": "^2.1.3",
+    "@hapi/joi": "^17.1.1",
+    "@stripe/react-stripe-js": "^1.1.2",
+    "@stripe/stripe-js": "^1.3.1",
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.5.0",
+    "@testing-library/user-event": "^7.2.1",
+    "@types/dotenv": "^8.2.0",
+    "array-unique": "^0.3.2",
+    "axios": "^0.19.2",
+    "babel": "^6.23.0",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.19.0",
+    "compression": "^1.7.4",
+    "concat-stream": "^2.0.0",
+    "cors": "^2.8.5",
+    "cryptr": "^6.0.2",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-session": "^1.17.1",
+    "helmet": "^3.22.0",
+    "imagesloaded": "^4.1.4",
+    "joi": "^14.3.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.9.15",
+    "nodemailer": "^6.4.6",
+    "nodemailer-express-handlebars": "^4.0.0",
+    "nodemon": "^2.0.2",
+    "parcel-bundler": "^1.12.4",
+    "paypal-rest-sdk": "^1.8.1",
+    "query-string": "^6.11.1",
+    "stripe": "^8.49.0",
+    "textbelt": "0.0.4",
+    "textmagic-rest-client": "^1.0.10",
+    "twilio": "^3.43.1",
+    "uuid": "^7.0.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rherugu/LocalMainStreetBackend.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rherugu/LocalMainStreetBackend/issues"
+  },
+  "homepage": "https://github.com/rherugu/LocalMainStreetBackend#readme",
+  "engines": {
+    "node": "12.16.2",
+    "npm": "6.14.4"
+  }
+}
