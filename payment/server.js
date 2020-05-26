@@ -44,6 +44,10 @@ var qrcodeId;
 var businessName;
 var amountPaid;
 
+var paymentIntent;
+
+var charge;
+
 const app = express();
 var compression = require("compression");
 app.use(compression()); //Compress all routes
@@ -448,6 +452,8 @@ app.post(
       data = event.data;
       eventType = event.type;
       e = event;
+
+      if (e.data.object.id.startsWith("ch")) charge = e.data.object.id;
     } else {
       // Webhook signing is recommended, but if the secret is not
       // configured in `config.js`, retrieve the event data directly
@@ -455,11 +461,14 @@ app.post(
       data = req.body.data;
       eventType = req.body.type;
       e = req.body;
+
+      if (e.data.object.id.startsWith("ch")) charge = e.data.object.id;
     }
 
     if (eventType === "checkout.session.completed") {
       console.log(`🔔  💰  💵  💸  🤑    Payment received!`);
 
+      console.log("charge", charge);
       console.log(emailq);
       console.log(nameq);
       console.log(balance);
@@ -467,12 +476,18 @@ app.post(
       console.log("businessName: ", businessName);
       console.log("amountPaid: ", amountPaid);
 
+      paymentIntent = e.data.object.payment_intent;
+      console.info(paymentIntent);
+
       var qrcodeDataParsed = {
         emailq: emailq,
         nameq: nameq,
         balance: balance,
         businessName: businessName,
+        charge: charge,
       };
+
+      console.log(qrcodeDataParsed);
 
       var qrcodeData = JSON.stringify(qrcodeDataParsed);
       console.log(qrcodeData);
@@ -555,6 +570,19 @@ app.post("/decryption", (req, res) => {
   return res.json({
     decryptedData: JSON.parse(decryption),
   });
+});
+
+app.get("/refund", async (req, res) => {
+  // const refund = await stripe.refunds.create({
+  //   payment_intent: paymentIntent,
+  //   charge: charge,
+  // });
+  console.log(charge);
+  await stripe.refunds.create({ charge: charge }, function (err, refund) {
+    console.error(err);
+  });
+
+  return res.send("success");
 });
 
 module.exports = app;

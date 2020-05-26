@@ -27,3 +27,8 @@ yarn-error.log*
 package-lock.json
 
 .now
+
+./contact/config.js
+./contact/config
+/contact/config.js
+/contact/config

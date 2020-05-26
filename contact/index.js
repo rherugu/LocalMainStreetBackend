@@ -7,6 +7,9 @@ const Joi = require("@hapi/joi");
 const { contactValidation } = require("../API/validation");
 const helmet = require("helmet");
 const hbs = require("nodemailer-express-handlebars");
+const Cryptr = require("cryptr");
+const cryptr = new Cryptr(process.env.qrCodeSecretKey);
+
 var phoneNumber;
 
 require("dotenv/config");
@@ -164,6 +167,39 @@ router.post("/sendqrcode", (req, res, next) => {
     } else {
       res.json({
         status: "success",
+      });
+    }
+  });
+});
+
+router.post("/resetPass", (req, res, next) => {
+  // const { error } = contactValidation(req.body);
+  // if (error) return res.send(error.details[0].message);
+
+  var email = req.body.emailp;
+  var key = Math.floor(100000 + Math.random() * 900000);
+  var content = `Hello, we are sorry to hear you have lost your password. No worries, you can reset it with this code: ${key}`;
+
+  var mail = {
+    from: "info@localmainstreet.com",
+    to: email, // Change to email address that you want to receive messages on
+    subject: "Reset Password",
+    text: content,
+  };
+
+  var encKey = cryptr.encrypt(key);
+
+  transporter2.sendMail(mail, (err, data) => {
+    if (err) {
+      console.log(err);
+      res.json({
+        status: "fail",
+        err: err,
+      });
+    } else {
+      res.json({
+        status: "success",
+        encKey: encKey,
       });
     }
   });
