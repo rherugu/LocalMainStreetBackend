@@ -35,7 +35,7 @@ const BusinessValidation = (req) => {
     fnameb: Joi.string().min(1).required(),
     lnameb: Joi.string().min(1).required(),
     bname: Joi.string().min(1).required(),
-    description: Joi.string().min(10).max(1000).required(),
+    description: Joi.string().min(3).max(830).required(),
     address: Joi.string().min(3).required(),
     phoneNumber: Joi.string().min(3).required(),
     businessCatagory: Joi.string().min(1),

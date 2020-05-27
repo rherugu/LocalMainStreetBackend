@@ -95,7 +95,7 @@ router.post("/send", (req, res, next) => {
   var content = `name: ${name} \n email: ${email} \n message: ${message} `;
 
   var mail = {
-    from: email,
+    from: "rherugu@gmail.com",
     to: "info@localmainstreet.com", // Change to email address that you want to receive messages on
     subject: "New Message from LocalMainStreet Contact Form",
     text: content,
@@ -143,6 +143,43 @@ router.post("/sendqrcode", (req, res, next) => {
 
   var email = req.body.emailq;
   var content = `Hello! You have bought a QR Code in localmainstreet.com.`;
+
+  var mail = {
+    from: "info@localmainstreet.com",
+    to: email, // Change to email address that you want to receive messages on
+    subject: "QR Code",
+    text: content,
+    attachments: [
+      {
+        path: qrcodelink,
+      },
+    ],
+    // template: "qrcode",
+  };
+
+  transporter2.sendMail(mail, (err, data) => {
+    if (err) {
+      console.log(err);
+      res.json({
+        status: "fail",
+        err: err,
+      });
+    } else {
+      res.json({
+        status: "success",
+      });
+    }
+  });
+});
+
+router.post("/sendqrcodeshare", (req, res, next) => {
+  // const { error } = contactValidation(req.body);
+  // if (error) return res.send(error.details[0].message);
+  var name = req.body.name;
+  var bname = req.body.bname;
+  var email = req.body.emailq;
+  var message = req.body.message;
+  var content = `Hello! ${name} has sent you a gift card for ${bname}. Message: ${message}`;
 
   var mail = {
     from: "info@localmainstreet.com",

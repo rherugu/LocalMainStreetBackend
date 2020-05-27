@@ -93,9 +93,34 @@ router.get("/:postId", async (req, res) => {
 //Delete Post
 router.delete("/:postId", async (req, res) => {
   try {
-    const removedPost = await Post.deleteOne({ _id: req.params.postId });
-    res.json(removedPost);
+    try {
+      const removedPost = await Post.deleteOne({ _id: req.params.postId });
+      res.json(removedPost);
+    } catch (error) {
+      const removedPost = await Blogin.deleteOne({ _id: req.params.postId });
+      res.json(removedPost);
+    }
   } catch (err) {
+    res.json({ message: err });
+  }
+});
+
+router.post("/getId", async (req, res) => {
+  var email = req.body.emailf;
+  console.log(email);
+
+  try {
+    const emailfb = await Blogin.findOne({ emailb: email });
+    const emailfcu = await Post.findOne({ email: email });
+
+    if (emailfb) {
+      console.log(emailfb);
+      res.json({ emailp: emailfb });
+    } else {
+      console.log(emailfcu);
+      res.json({ emailp: emailfcu });
+    }
+  } catch (error) {
     res.json({ message: err });
   }
 });
@@ -103,14 +128,32 @@ router.delete("/:postId", async (req, res) => {
 //Update a post
 router.patch("/:postId", async (req, res) => {
   try {
-    const updatedPost = await Post.updateOne(
-      { _id: req.params.postId },
-      { $set: { email: req.body.email } },
-      { $set: { password: req.body.password } },
-      { $set: { fname: req.body.fname } },
-      { $set: { lname: req.body.lname } }
-    );
-    res.json(updatedPost);
+    try {
+      const updatedPost = await Post.updateOne(
+        { _id: req.params.postId },
+        {
+          $set: {
+            password: req.body.passwordf,
+          },
+        }
+      );
+      res.json(updatedPost);
+    } catch (error) {
+      console.log(error);
+    }
+    try {
+      const updatedBlogin = await Blogin.updateOne(
+        { _id: req.params.postId },
+        {
+          $set: {
+            passwordb: req.body.passwordf,
+          },
+        }
+      );
+      res.json(updatedBlogin);
+    } catch (error) {
+      console.log(error);
+    }
   } catch (err) {
     res.json({ message: err });
   }

@@ -48,6 +48,8 @@ var paymentIntent;
 
 var charge;
 
+var donate;
+
 const app = express();
 var compression = require("compression");
 app.use(compression()); //Compress all routes
@@ -81,15 +83,6 @@ app.post("/checkout", async (req, res) => {
   let error;
   let status;
   try {
-    const accountLinks = await stripe.accountLinks.create({
-      account: "acct_1032D82eZvKYlo2C",
-      failure_url:
-        "https://images.squarespace-cdn.com/content/v1/5a1ffcef4c0dbf776ccbc5a1/1534837933723-Q40CFTGHVXOESRZFY1YP/ke17ZwdGBToddI8pDm48kF5p5Fi6T9MQS3XGauu7T8dZw-zPPgdn4jUwVcJE1ZvWQUxwkmyExglNqGp0IvTJZamWLI2zvYWH8K3-s_4yszcp2ryTI0HqTOaaUohrI8PIrQnLfoR4fmphWk35MiuRcUg0qTFGclgUyKxXa8xDp_c/Payment+failed+for+web.png",
-      success_url: "https://i.stack.imgur.com/YbIni.png",
-      type: "custom_account_verification",
-      collect: "eventually_due",
-    });
-
     const { product, token } = req.body;
 
     const customer = await stripe.customers.create({
@@ -104,7 +97,7 @@ app.post("/checkout", async (req, res) => {
         currency: "usd",
         customer: customer.id,
         receipt_email: token.email,
-        description: `Purchased the ${product.name}`,
+        description: `Donated to LocalMainStreet`,
         shipping: {
           name: token.card.name,
           address: {
@@ -120,28 +113,6 @@ app.post("/checkout", async (req, res) => {
         idempotency_key,
       }
     );
-
-    const database = await Blogin.find();
-    console.log("abcdefghijklmnopqrstuvwxyz", database[0].routingNumber);
-    // console.log(database);
-
-    const BankAccountToken = await stripe.tokens.create(
-      {
-        bank_account: {
-          country: "US",
-          currency: "usd",
-          account_holder_name: "Raghav Herugu",
-          account_holder_type: "Individual",
-          routing_number: "110000000",
-          account_number: "000123456789",
-        },
-      },
-      function (err, token) {
-        console.error(err);
-      }
-    );
-
-    console.log("&*&#*(&@(*$&*(@#&$*(@#&", BankAccountToken);
 
     console.log("Charge:", { charge });
     status = "success";
@@ -177,7 +148,6 @@ app.post("/get-oauth-link", async (req, res) => {
 app.get("/get-oauth-link", async (req, res) => {
   const state = uuid();
 
-  // req.session.state = state;
   const args = new URLSearchParams({
     state,
     client_id: process.env.STRIPE_CLIENT_ID,
@@ -189,14 +159,6 @@ app.get("/get-oauth-link", async (req, res) => {
 
 app.get("/authorize-oauth", async (req, res) => {
   const { code, state } = req.query;
-  // // Assert the state matches the state you provided
-  // in the OAuth link (optional).
-  // if (req.session.state !== state) {
-  //   return res
-  //     .status(403)
-  //     .json({ error: "Incorrect state parameter: " + state });
-  // }
-
   // Send the authorization code to Stripe's API.
   stripe.oauth
     .token({
@@ -214,34 +176,6 @@ app.get("/authorize-oauth", async (req, res) => {
 
         Account = connected_account_id;
 
-        // const id = database[database.length - 1]._id;
-
-        // const updatedShop = await Blogin.updateOne(
-        //   { _id: id },
-        //   {
-        //     $set: {
-        //       stripeAccountId: connected_account_id,
-        //     },
-        //   }
-        //   //   { $set: { lnameq: req.body.lnameq } },
-        //   //   { $set: { balance: req.body.balance } }
-        // );
-
-        // Render some HTML or redirect to a different page.
-
-        // const account = await stripe.accounts.create({
-        //   country: "US",
-        //   type: "custom",
-        //   requested_capabilities: ["card_payments", "transfers"],
-        // });
-
-        // const accountLinks = await stripe.accountLinks.create({
-        //   account: connected_account_id,
-        //   failure_url: "https://example.com/failure",
-        //   success_url: "https://example.com/success",
-        //   type: "custom_account_verification",
-        //   collect: "eventually_due",
-        // });
         return res.redirect(301, "http://localhost:3000/Success");
       },
       (err) => {
@@ -328,6 +262,15 @@ app.get("/checkout-session", async (req, res) => {
   }
 });
 
+// app.post("/donate", (req, res) => {
+//   var data = req.body.status;
+//   if (data === "yes") {
+//     donate = "0";
+//   } else {
+//     donate = "1";
+//   }
+// });
+
 app.post("/create-checkout-session", async (req, res) => {
   try {
     const domainURL = req.headers.referer;
@@ -346,6 +289,10 @@ app.post("/create-checkout-session", async (req, res) => {
 
     businessName = product.bname;
     amountPaid = quantity;
+    var amountone = quantity * 100;
+
+    var finalamount = amountone + 59;
+    console.info(finalamount);
 
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
@@ -356,7 +303,7 @@ app.post("/create-checkout-session", async (req, res) => {
           images: ["https://image.flaticon.com/icons/svg/2331/2331813.svg"],
           quantity: 1,
           currency: process.env.CURRENCY,
-          amount: quantity * 100, // Keep the
+          amount: finalamount, // Keep the
           // amount on the server to prevent customers
           // from manipulating on client
         },
@@ -366,6 +313,7 @@ app.post("/create-checkout-session", async (req, res) => {
           destination: product.id,
         },
       },
+
       // ?session_id={CHECKOUT_SESSION_ID}\
       // means the redirect will have the session ID set as a query param
       success_url: `${domainURL}/?session_id={CHECKOUT_SESSION_ID}`,

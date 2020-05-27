@@ -75,6 +75,15 @@ app.delete("/:mainId", async (req, res) => {
   }
 });
 
+app.delete("/delete/:mainEncData", async (req, res) => {
+  try {
+    const removedMain = await Main.deleteOne({ _id: req.params.mainEncData });
+    res.json(removedMain);
+  } catch (err) {
+    res.json({ message: err });
+  }
+});
+
 //Update
 app.patch("/:mainId", async (req, res) => {
   try {
