@@ -176,7 +176,7 @@ app.get("/authorize-oauth", async (req, res) => {
 
         Account = connected_account_id;
 
-        return res.redirect(301, "http://localhost:3000/Success");
+        return res.redirect(301, "https://localmainstreet.com/Success");
       },
       (err) => {
         if (err.type === "StripeInvalidGrantError") {
