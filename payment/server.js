@@ -152,7 +152,7 @@ app.get("/get-oauth-link", async (req, res) => {
     state,
     client_id: process.env.STRIPE_CLIENT_ID,
   });
-  const url = `https://connect.stripe.com/express/oauth/authorize?${args.toString()}&stripe_user[email]=${email}&stripe_user[phone_number]=${PhoneNumber}&stripe_user[business_name]=${bname}&stripe_user[first_name]=${fname}&stripe_user[last_name]=${lname}&stripe_user[product_description]=${description}&stripe_user[dob_day]=${day}&stripe_user[dob_month]=${month}&stripe_user[dob_year]=${year}`;
+  const url = `https://connect.stripe.com/express/oauth/authorize?${args.toString()}&stripe_user[business_type]=company&stripe_user[email]=${email}&stripe_user[phone_number]=${PhoneNumber}&stripe_user[business_name]=${bname}&stripe_user[first_name]=${fname}&stripe_user[last_name]=${lname}&stripe_user[product_description]=${description}&stripe_user[dob_day]=${day}&stripe_user[dob_month]=${month}&stripe_user[dob_year]=${year}`;
   // res.send({ url });
   return res.send({ url });
 });
