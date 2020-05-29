@@ -209,6 +209,8 @@ app.post("/data", async (req, res) => {
 
   console.log(object);
   console.log(object.fname);
+
+  return res.send(object);
 });
 
 app.post("/authorize-oauthpost", async (req, res) => {
