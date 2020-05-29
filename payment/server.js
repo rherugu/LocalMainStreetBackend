@@ -345,6 +345,8 @@ app.post("/dashboard", (req, res) => {
   return res.send(idForLink.stripeAccountId);
 });
 
+app.use("/dashboard", cors());
+
 app.get("/dashboard", async (req, res) => {
   const link = await stripe.accounts.createLoginLink(idForLink.stripeAccountId);
 
