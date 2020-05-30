@@ -301,7 +301,7 @@ app.post("/create-checkout-session", async (req, res) => {
     var finalamount = amountone;
     console.info(finalamount);
     var appFee = Math.ceil(finalamount * 0.029 + 30);
-
+    var newDonation = 100;
     var application_fee_amount = Math.ceil((finalamount + appFee) * 0.029 + 30);
     console.log(appFee);
 
@@ -318,7 +318,7 @@ app.post("/create-checkout-session", async (req, res) => {
           images: ["https://image.flaticon.com/icons/svg/2331/2331813.svg"],
           quantity: 1,
           currency: process.env.CURRENCY,
-          amount: finalamount + application_fee_amount + donation, // Keep the
+          amount: finalamount + application_fee_amount + newDonation, // Keep the
           // amount on the server to prevent customers
           // from manipulating on client
         },
@@ -327,7 +327,7 @@ app.post("/create-checkout-session", async (req, res) => {
         transfer_data: {
           destination: product.id,
         },
-        application_fee_amount: application_fee_amount + donation,
+        application_fee_amount: application_fee_amount + newDonation,
       },
 
       // ?session_id={CHECKOUT_SESSION_ID}\
