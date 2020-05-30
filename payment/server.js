@@ -300,7 +300,7 @@ app.post("/create-checkout-session", async (req, res) => {
 
     var finalamount = amountone;
     console.info(finalamount);
-    var appFee = finalamount * 0.029 + 30;
+    var appFee = Math.ceil(finalamount * 0.029 + 30);
     console.log(appFee);
 
     // if (donation === 0) {
@@ -325,7 +325,7 @@ app.post("/create-checkout-session", async (req, res) => {
         transfer_data: {
           destination: product.id,
         },
-        application_fee_amount: Math.ceil(appFee),
+        application_fee_amount: appFee,
       },
 
       // ?session_id={CHECKOUT_SESSION_ID}\
