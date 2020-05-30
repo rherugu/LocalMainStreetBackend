@@ -316,7 +316,7 @@ app.post("/create-checkout-session", async (req, res) => {
           images: ["https://image.flaticon.com/icons/svg/2331/2331813.svg"],
           quantity: 1,
           currency: process.env.CURRENCY,
-          amount: finalamount, // Keep the
+          amount: finalamount + appFee, // Keep the
           // amount on the server to prevent customers
           // from manipulating on client
         },
