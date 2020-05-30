@@ -20,4 +20,5 @@ We hope you enjoy and we hope businesses won't die out in times like these! :)
 <br>
 
 Made with love by Raghav and Vaibhav Herugu
+
 [![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/E1E01ROY3)
