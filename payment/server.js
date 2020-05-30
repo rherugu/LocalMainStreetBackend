@@ -50,6 +50,9 @@ var charge;
 
 var donate;
 
+var regularPrice;
+var donation;
+
 const app = express();
 var compression = require("compression");
 app.use(compression()); //Compress all routes
@@ -262,12 +265,16 @@ app.get("/checkout-session", async (req, res) => {
 });
 
 // app.post("/donate", (req, res) => {
-//   var data = req.body.status;
-//   if (data === "yes") {
-//     donate = "0";
-//   } else {
-//     donate = "1";
-//   }
+//   regularPrice = req.body.regularPrice;
+//   donation = req.body.donation;
+
+//   console.log("donate", regularPrice);
+//   console.log("donate", donation);
+
+//   return res.json({
+//     regularPrice: regularPrice,
+//     donation: donation,
+//   });
 // });
 
 app.post("/create-checkout-session", async (req, res) => {
@@ -288,10 +295,15 @@ app.post("/create-checkout-session", async (req, res) => {
 
     businessName = product.bname;
     amountPaid = quantity;
+    console.log("fsfjf", donation);
     var amountone = quantity * 100;
 
-    var finalamount = amountone + 59;
+    var finalamount = amountone + 60;
     console.info(finalamount);
+
+    // if (donation === 0) {
+    //   donation = 1;
+    // }
 
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
@@ -311,6 +323,7 @@ app.post("/create-checkout-session", async (req, res) => {
         transfer_data: {
           destination: product.id,
         },
+        // application_fee_amount: donation * 100,
       },
 
       // ?session_id={CHECKOUT_SESSION_ID}\

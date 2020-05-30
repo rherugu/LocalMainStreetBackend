@@ -30,7 +30,7 @@ const BLoginValidation = (req) => {
 
 const BusinessValidation = (req) => {
   const schema = Joi.object({
-    emailb: Joi.string().min(6).required().email(),
+    emailb: Joi.string().min(5).required().email(),
     passwordb: Joi.string().min(6).required(),
     fnameb: Joi.string().min(1).required(),
     lnameb: Joi.string().min(1).required(),
