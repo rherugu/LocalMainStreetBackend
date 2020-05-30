@@ -301,7 +301,7 @@ app.post("/create-checkout-session", async (req, res) => {
     var finalamount = amountone;
     console.info(finalamount);
     var appFee = Math.ceil(finalamount * 0.029 + 30);
-    var donation = 1;
+    var donation = 100;
     var application_fee_amount = Math.ceil((finalamount + appFee) * 0.029 + 30);
     console.log(appFee);
 
