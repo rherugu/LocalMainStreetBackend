@@ -264,18 +264,18 @@ app.get("/checkout-session", async (req, res) => {
   }
 });
 
-// app.post("/donate", (req, res) => {
-//   regularPrice = req.body.regularPrice;
-//   donation = req.body.donation;
+app.post("/donate", (req, res) => {
+  regularPrice = req.body.regularPrice;
+  donation = req.body.donation;
 
-//   console.log("donate", regularPrice);
-//   console.log("donate", donation);
+  console.log("donate", regularPrice);
+  console.log("donate", donation);
 
-//   return res.json({
-//     regularPrice: regularPrice,
-//     donation: donation,
-//   });
-// });
+  return res.json({
+    regularPrice: regularPrice,
+    donation: donation,
+  });
+});
 
 app.post("/create-checkout-session", async (req, res) => {
   try {
@@ -301,7 +301,7 @@ app.post("/create-checkout-session", async (req, res) => {
     var finalamount = amountone;
     console.info(finalamount);
     var appFee = Math.ceil(finalamount * 0.029 + 30);
-    var donation = 100;
+
     var application_fee_amount = Math.ceil((finalamount + appFee) * 0.029 + 30);
     console.log(appFee);
 
