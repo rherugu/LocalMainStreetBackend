@@ -50,7 +50,6 @@ var charge;
 
 var donate;
 
-var regularPrice;
 var donation;
 
 const app = express();
@@ -265,14 +264,11 @@ app.get("/checkout-session", async (req, res) => {
 });
 
 app.post("/donate", (req, res) => {
-  regularPrice = req.body.regularPrice;
   donation = req.body.donation;
 
-  console.log("donate", regularPrice);
   console.log("donate", donation);
 
   return res.json({
-    regularPrice: regularPrice,
     donation: donation,
   });
 });
@@ -295,7 +291,7 @@ app.post("/create-checkout-session", async (req, res) => {
 
     businessName = product.bname;
     amountPaid = quantity;
-    console.log("fsfjf", donation);
+    console.log("donation: ", donation);
     var amountone = quantity * 100;
 
     var finalamount = amountone;
@@ -304,10 +300,6 @@ app.post("/create-checkout-session", async (req, res) => {
     var newDonation = 100;
     var application_fee_amount = Math.ceil((finalamount + appFee) * 0.029 + 30);
     console.log(appFee);
-
-    // if (donation === 0) {
-    //   donation = 1;
-    // }
 
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
