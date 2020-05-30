@@ -298,7 +298,7 @@ app.post("/create-checkout-session", async (req, res) => {
     console.log("fsfjf", donation);
     var amountone = quantity * 100;
 
-    var finalamount = amountone + 60;
+    var finalamount = amountone;
     console.info(finalamount);
 
     // if (donation === 0) {
