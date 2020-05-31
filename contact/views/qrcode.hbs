@@ -1,24 +1,82 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QR Code</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&display=swap" rel="stylesheet">
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>QR Code</title>
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&display=swap" rel="stylesheet">
 
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&display=swap');
-        body {
-            text-align: center;
-            font-family: 'Poppins', sans-serif;
-        }
-    </style>
-</head>
-<body>
-    <h1>Howdy!</h1>
+        <style>
+            @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&display=swap');
+            body {
+                text-align: center;
+                font-family: 'Poppins', sans-serif;
+                -webkit-font-smoothing: antialiased;
+            }
 
-    <h2>It looks like you bought a QR Code at <a href="https://localmainstreet.com">LocalMainStreet</a></h2>
-    <br>
-    <h3>Your QR Code is attached to this email. Have a good day!</h3>
-</body>
-</html>
+
+
+            .link {
+                /* RESET */
+                text-decoration: none;
+                padding: 0px 2px;
+                position: relative;
+                display: inline-block;
+                overflow: hidden;
+                color: #333;
+                vertical-align: bottom;
+                transition: color 0.3s ease-out;
+            }
+
+            .link::before {
+                content: "";
+                position: absolute;
+                z-index: -1;
+                top: 0;
+                left: 0;
+                transform: translateY(calc(100% - 2px));
+                width: 100%;
+                height: 100%;
+                background-image: linear-gradient(60deg, #64b3f4 0%, #c2e59c 100%);
+                transition: transform 0.25s ease-out;
+            }
+
+            .link:hover {
+                color: rgb(69, 69, 69);
+            }
+            .link:hover::before {
+                transform: translateY(0);
+                transition: transform 0.25s ease-out;
+            }
+            .div {
+                background-color: rgb(255, 255, 255);
+                border-radius: 15px;
+                width: fit-content;
+                height: 95vh;
+                margin: auto;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                flex-direction: column;
+                filter:sepia(0.2)
+            }
+            .footer {
+                bottom: 30px;
+                left: 50%;
+                transform: translate(-50%);
+            }
+
+        </style>
+    </head>
+    <body>
+        <div class="div">
+            <img src="https://i.imgur.com/lyrjZEd.png" alt="localmainstreet email" />
+            <h1 style="margin: 30px;">Thank you for supporting local businessess!</h1>
+
+            <h2 style="margin: 30px;">It looks like you bought a QR Code at <a class="link" href="https://localmainstreet.com">LocalMainStreet.com</a></h2>
+            <br style="margin: 30px;">
+            <h3 style="margin: 30px;">Your QR Code is attached to this email. Have a good day!</h3>
+            <h4 class="footer" style="position: absolute;">Copyright © 2020 LocalMainStreet</h4>
+        </div>
+    </body>
+    </html>

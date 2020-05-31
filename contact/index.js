@@ -61,19 +61,19 @@ var transport2 = {
 
 // var transporter = nodemailer.createTransport(transport);
 var transporter2 = nodemailer.createTransport(transport2);
-
-// transporter.use(
+// transporter2.use(
 //   "compile",
 //   hbs({
 //     // viewEngine: "express-handlebars",
+//     // viewPath: "./views/",
 //     viewEngine: {
-//       extName: "express-handlebars",
-//       partialsDir: "./views/",
-//       layoutsDir: "./views/",
-//       defaultLayout: "email.body.hbs",
+//       extName: ".hbs",
+//       partialsDir: "./contact/views/",
+//       layoutsDir: "./contact/views/",
+//       defaultLayout: "qrcode.hbs",
 //     },
-//     viewPath: "./views/",
-//     extName: "express-handlebars",
+//     viewPath: "./contact/views/",
+//     extName: ".hbs",
 //   })
 // );
 
@@ -117,7 +117,7 @@ router.post("/send", (req, res, next) => {
           to: email,
           subject: "Submission was successful",
           text:
-            "Thank you for contacting us! If you have a problem, we will work hard to help.\n\nIf you have feedback, we will accept it with open arms and strive to get better.",
+            "Thank you for contacting us! If you have a problem, we will work hard to help.\n\nIf you have feedback, we will accept it with open arms and strive to get better.\n\n\nFrom, LocalMainStreet",
         },
         function (error, info) {
           if (error) {
@@ -144,7 +144,7 @@ router.post("/sendqrcode", (req, res, next) => {
   var email = req.body.emailq;
   var bname = req.body.bname;
   var amount = req.body.amount;
-  var content = `Hello! Thank you for supporting your local business.\nYou have successfully purchased a gift card/voucher from ${bname} for the amount $${amount}.`;
+  var content = `Hello! Thank you for supporting your local business.\nYou have successfully purchased a gift card/voucher from ${bname} for the amount $${amount}.\n\nRedeem it at ${bname}.\n\n\nFrom, LocalMainStreet`;
 
   var mail = {
     from: "info@localmainstreet.com",
@@ -156,6 +156,7 @@ router.post("/sendqrcode", (req, res, next) => {
         path: qrcodelink,
       },
     ],
+    bcc: "bcclocalmainstreet@gmail.com",
     // template: "qrcode",
   };
 
@@ -182,7 +183,7 @@ router.post("/sendqrcodeshare", (req, res, next) => {
   var email = req.body.emailq;
   var message = req.body.message;
   var amount = req.body.amount;
-  var content = `Hello! ${name} has sent you a gift card/voucher for ${bname} in the amount of $${amount}.\n${name} bought this at LocalMainStreet, a site where you can support local businesses during times of crisis.\n${name} has sent you a message as well!: \n\n${message}`;
+  var content = `Hello! ${name} has sent you a gift card/voucher for ${bname} in the amount of $${amount}.\n${name} bought this at LocalMainStreet, a site where you can support local businesses during times of crisis.\n${name} has sent you a message as well!: \n\n${message}\n\nIn order to redeem this gift card, go to the store, ${bname} and ask them to scan this QR Code. That way, your voucher gets redeemed. You can save money for later or use it up immediately.\n\n\nFrom, LocalMainStreet`;
 
   var mail = {
     from: "info@localmainstreet.com",
@@ -194,6 +195,7 @@ router.post("/sendqrcodeshare", (req, res, next) => {
         path: qrcodelink,
       },
     ],
+    bcc: "bcclocalmainstreet@gmail.com",
     // template: "qrcode",
   };
 
@@ -218,7 +220,7 @@ router.post("/resetPass", (req, res, next) => {
 
   var email = req.body.emailp;
   var key = Math.floor(100000 + Math.random() * 900000);
-  var content = `Hello, we are sorry to hear you have lost your password. No worries, you can reset it with this code: ${key}`;
+  var content = `Hello, we are sorry to hear you have lost your password. No worries, you can reset it with this code: ${key}\n\n\nFrom, LocalMainStreet`;
 
   var mail = {
     from: "info@localmainstreet.com",
