@@ -117,7 +117,7 @@ router.post("/send", (req, res, next) => {
           to: email,
           subject: "Submission was successful",
           text:
-            "Thank you for contacting us! We appreciate your feedback and will strive to get better!",
+            "Thank you for contacting us! If you have a problem, we will work hard to help.\n\nIf you have feedback, we will accept it with open arms and strive to get better.",
         },
         function (error, info) {
           if (error) {
@@ -142,12 +142,14 @@ router.post("/sendqrcode", (req, res, next) => {
   // if (error) return res.send(error.details[0].message);
 
   var email = req.body.emailq;
-  var content = `Hello! You have bought a QR Code in localmainstreet.com.`;
+  var bname = req.body.bname;
+  var amount = req.body.amount;
+  var content = `Hello! Thank you for supporting your local business.\nYou have successfully purchased a gift card/voucher from ${bname} for the amount $${amount}.`;
 
   var mail = {
     from: "info@localmainstreet.com",
     to: email, // Change to email address that you want to receive messages on
-    subject: "QR Code",
+    subject: "Gift Card from LocalMainStreet",
     text: content,
     attachments: [
       {
@@ -179,12 +181,13 @@ router.post("/sendqrcodeshare", (req, res, next) => {
   var bname = req.body.bname;
   var email = req.body.emailq;
   var message = req.body.message;
-  var content = `Hello! ${name} has sent you a gift card for ${bname}. Message: ${message}`;
+  var amount = req.body.amount;
+  var content = `Hello! ${name} has sent you a gift card/voucher for ${bname} in the amount of $${amount}.\n${name} bought this at LocalMainStreet, a site where you can support local businesses during times of crisis.\n${name} has sent you a message as well!: \n\n${message}`;
 
   var mail = {
     from: "info@localmainstreet.com",
     to: email, // Change to email address that you want to receive messages on
-    subject: "QR Code",
+    subject: `A Gift from ${name}`,
     text: content,
     attachments: [
       {

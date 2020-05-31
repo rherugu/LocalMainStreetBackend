@@ -264,7 +264,7 @@ app.get("/checkout-session", async (req, res) => {
 });
 
 app.post("/donate", (req, res) => {
-  donation = req.body.donation;
+  donation = req.body.donation * 100;
 
   console.log("donate", donation);
 
@@ -310,7 +310,7 @@ app.post("/create-checkout-session", async (req, res) => {
           images: ["https://image.flaticon.com/icons/svg/2331/2331813.svg"],
           quantity: 1,
           currency: process.env.CURRENCY,
-          amount: finalamount + application_fee_amount + newDonation, // Keep the
+          amount: finalamount + application_fee_amount + donation, // Keep the
           // amount on the server to prevent customers
           // from manipulating on client
         },
@@ -319,7 +319,7 @@ app.post("/create-checkout-session", async (req, res) => {
         transfer_data: {
           destination: product.id,
         },
-        application_fee_amount: application_fee_amount + newDonation,
+        application_fee_amount: application_fee_amount + donation,
       },
 
       // ?session_id={CHECKOUT_SESSION_ID}\
