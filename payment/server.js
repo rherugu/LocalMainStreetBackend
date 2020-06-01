@@ -277,7 +277,7 @@ app.post("/create-checkout-session", async (req, res) => {
   try {
     const domainURL = req.headers.referer;
 
-    const { quantity, locale, product } = await req.body.body;
+    const { quantity, locale, product } = await req.body;
     console.log(product.id);
     // Create new Checkout Session for the order
     // Other optional params include:
