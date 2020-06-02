@@ -58,16 +58,7 @@ const app = express();
 var compression = require("compression");
 app.use(compression()); //Compress all routes
 app.use(helmet());
-
-app.all("*", expressJsoN);
-
-function expressJsoN(req, res, next) {
-  if (req.path == "/webhook") return next();
-
-  app.use(express.json());
-  //authenticate user
-  next();
-}
+app.use(express.json());
 app.use(cors());
 app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
@@ -276,7 +267,7 @@ app.post("/create-checkout-session", async (req, res) => {
   try {
     const domainURL = req.headers.referer;
 
-    const { quantity, locale, product } = await req.body.body;
+    const { quantity, locale, product } = await req.body;
     console.log(product.id);
     // Create new Checkout Session for the order
     // Other optional params include:
@@ -417,13 +408,13 @@ app.post(
       var e;
       console.log(body);
       try {
-        event = stripe.webhooks.constructEvent(
-          body,
-          signature,
-          process.env.STRIPE_WEBHOOK_SECRET
-        );
+        // event = stripe.webhooks.constructEvent(
+        //   body,
+        //   signature,
+        //   process.env.STRIPE_WEBHOOK_SECRET
+        // );
         // console.log(signature);
-        // event = body;
+        event = body;
       } catch (err) {
         console.error(
           `⚠️  ☣️  ☢️     Webhook signature verification failed. :( \n${err}`
