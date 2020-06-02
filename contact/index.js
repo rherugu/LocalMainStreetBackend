@@ -175,6 +175,44 @@ router.post("/sendqrcode", (req, res, next) => {
   });
 });
 
+router.post("/sendqrcodetoBusiness", (req, res, next) => {
+  // const { error } = contactValidation(req.body);
+  // if (error) return res.send(error.details[0].message);
+
+  var email = req.body.emailq;
+  var amount = req.body.amount;
+  var bname = req.body.bname;
+  var content = `Hello!\nYou have received a payment of $${amount} for your payment of ${bname}.\nIf this is your first payment, the payout may take up to 5-7 business days to reach your bank account.`;
+
+  var mail = {
+    from: "info@localmainstreet.com",
+    to: email, // Change to email address that you want to receive messages on
+    subject: "Payment received",
+    text: content,
+    attachments: [
+      {
+        path: qrcodelink,
+      },
+    ],
+    bcc: "bcclocalmainstreet@gmail.com",
+    // template: "qrcode",
+  };
+
+  transporter2.sendMail(mail, (err, data) => {
+    if (err) {
+      console.log(err);
+      res.json({
+        status: "fail",
+        err: err,
+      });
+    } else {
+      res.json({
+        status: "success",
+      });
+    }
+  });
+});
+
 router.post("/sendqrcodeshare", (req, res, next) => {
   // const { error } = contactValidation(req.body);
   // if (error) return res.send(error.details[0].message);

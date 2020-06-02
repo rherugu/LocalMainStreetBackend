@@ -45,6 +45,7 @@ var qrcodeId;
 
 var businessName;
 var amountPaid;
+var emailbusiness;
 
 var paymentIntent;
 
@@ -280,6 +281,8 @@ app.post("/create-checkout-session", async (req, res) => {
     // https://stripe.com/docs/api/checkout/sessions/create
 
     businessName = product.bname;
+    emailbusiness = product.email;
+
     amountPaid = quantity;
     console.log("donation: ", donation);
     var amountone = quantity * 100;
@@ -518,6 +521,7 @@ app.get("/encryption", (req, res) => {
       status: "success",
       businessName: businessName,
       amountPaid: amountPaid,
+      emailbusiness: emailbusiness,
     });
     encryption = undefined;
 
