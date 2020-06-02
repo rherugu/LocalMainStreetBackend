@@ -9,6 +9,8 @@ const bodyParser = require("body-parser");
 const Cryptr = require("cryptr");
 const cryptr = new Cryptr(process.env.qrCodeSecretKey);
 const Main = require("../QRCode/models/Main");
+const getRawBody = require("raw-body");
+var contentType = require("content-type");
 
 var stripeBankInfo;
 var stripeRoutingNumber;
@@ -56,7 +58,16 @@ const app = express();
 var compression = require("compression");
 app.use(compression()); //Compress all routes
 app.use(helmet());
-app.use(express.json());
+
+app.all("*", expressJsoN);
+
+function expressJsoN(req, res, next) {
+  if (req.path == "/webhook") return next();
+
+  app.use(express.json());
+  //authenticate user
+  next();
+}
 app.use(cors());
 app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
@@ -232,18 +243,6 @@ const { resolve } = require("path");
 // Copy the .env.example in the root into a .env file in this folder
 require("dotenv").config({ path: "./.env" });
 
-app.use(
-  express.json({
-    // We need the raw body to verify webhook signatures.
-    // Let's compute it only when hitting the Stripe webhook endpoint.
-    verify: function (req, res, buf) {
-      if (req.originalUrl.startsWith("/webhook")) {
-        req.rawBody = buf.toString();
-      }
-    },
-  })
-);
-
 app.get("/config", (req, res) => {
   res.send({
     publicKey: process.env.STRIPE_PUBLISHABLE_KEY,
@@ -375,7 +374,32 @@ app.post("/getInfo", (req, res) => {
 
   res.send("Success!");
 });
+// app.use(
+//   "/webhook",
+//   bodyParser.json({
+//     verify: (req, res, buf) => {
+//       req.rawBody = buf;
+//     },
+//   })
+// );
+// app.use("/webhook", function (req, res, next) {
+//   getRawBody(
+//     req,
+//     {
+//       length: req.headers["content-length"],
+//       limit: "1mb",
+//       encoding: contentType.parse(req).parameters.charset,
+//     },
+//     function (err, string) {
+//       if (err) return next(err);
+//       req.text = string;
+//       console.log(string);
+//       next();
+//     }
+//   );
+// });
 
+// app.use("/webhook", bodyParser.urlencoded({ extended: false }));
 // Webhook handler for asynchronous events.
 app.post(
   "/webhook",
@@ -391,15 +415,15 @@ app.post(
       let signature = req.headers["stripe-signature"];
       var body = req.body;
       var e;
-
+      console.log(body);
       try {
-        // event = stripe.webhooks.constructEvent(
-        //   body,
-        //   signature,
-        //   process.env.STRIPE_WEBHOOK_SECRET
-        // );
+        event = stripe.webhooks.constructEvent(
+          body,
+          signature,
+          process.env.STRIPE_WEBHOOK_SECRET
+        );
         // console.log(signature);
-        event = body;
+        // event = body;
       } catch (err) {
         console.error(
           `⚠️  ☣️  ☢️     Webhook signature verification failed. :( \n${err}`

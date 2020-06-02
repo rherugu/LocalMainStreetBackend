@@ -40,6 +40,7 @@
     "parcel-bundler": "^1.12.4",
     "paypal-rest-sdk": "^1.8.1",
     "query-string": "^6.11.1",
+    "raw-body": "^2.4.1",
     "stripe": "^8.49.0",
     "textbelt": "0.0.4",
     "textmagic-rest-client": "^1.0.10",
