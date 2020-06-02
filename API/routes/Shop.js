@@ -23,6 +23,15 @@ router.get("/", verify, async (req, res) => {
   }
 });
 
+router.get("/:emailb", verify, async (req, res) => {
+  try {
+    const shops = await Blogin.findOne({ emailb: req.params.emailb });
+    res.json(shops);
+  } catch (err) {
+    res.json({ message: err });
+  }
+});
+
 router.post("/", async (req, res) => {
   //VAILDATION
   const { error } = BusinessValidation(req.body);
