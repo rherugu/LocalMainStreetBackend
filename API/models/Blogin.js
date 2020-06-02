@@ -52,6 +52,9 @@ const BloginSchema = mongoose.Schema({
     type: String,
     required: true,
   },
+  website: {
+    type: String,
+  },
 });
 
 module.exports = mongoose.model("Blogin", BloginSchema);

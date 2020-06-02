@@ -44,6 +44,7 @@ const BusinessValidation = (req) => {
     routingNumber: Joi.string().min(3),
     accountNumber: Joi.string().min(3),
     stripeAccountId: Joi.string().required(),
+    website: Joi.string(),
   });
   return schema.validate(req);
 };
