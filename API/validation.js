@@ -50,7 +50,6 @@ const BusinessValidation = (req) => {
       .allow(" ")
       .allow(null)
       .allow(NaN)
-      .allow(undefined)
       .allow("  ")
       .optional()
       .default(""),
