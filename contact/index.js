@@ -183,7 +183,7 @@ router.post("/sendqrcodetoBusiness", (req, res, next) => {
   var amount = req.body.amount;
   var bname = req.body.bname;
   var name = req.body.name;
-  var content = `Hello!\nYou have received a payment of $${amount} from ${name} for your registered business on LocalMainStreet: ${bname}.\nThe voucher has been sent to the customer which they will redeem at a later time.\nUse our LocalMainStreet App to scan the QR Code.\nIf this is your first payment, the payout may take up to 5-7 business days to reach your bank account.`;
+  var content = `Hello!\nYou have received a payment of $${amount} for your registered business on LocalMainStreet: ${bname}.\nThe voucher has been sent to the customer which they will redeem at a later time.\nUse our LocalMainStreet App to scan the QR Code.\nIf this is your first payment, the payout may take up to 5-7 business days to reach your bank account.`;
 
   var mail = {
     from: "info@localmainstreet.com",
