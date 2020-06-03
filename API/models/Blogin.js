@@ -54,6 +54,7 @@ const BloginSchema = mongoose.Schema({
   },
   website: {
     type: String,
+    default: " ",
   },
 });
 
