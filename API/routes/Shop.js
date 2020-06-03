@@ -14,7 +14,7 @@ const Post = require("../models/Post");
 
 const { BusinessValidation } = require("../validation.js");
 
-router.get("/", verify, async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const shops = await Blogin.find();
     res.json(shops);
