@@ -52,7 +52,8 @@ const BusinessValidation = (req) => {
       .allow(NaN)
       .allow(undefined)
       .allow("  ")
-      .optional(),
+      .optional()
+      .default(""),
   });
   return schema.validate(req);
 };
