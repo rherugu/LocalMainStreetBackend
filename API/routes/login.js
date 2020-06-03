@@ -64,6 +64,8 @@ router.post("/", async (req, res) => {
         url: "/Dashboard",
         stripeId: stripeId.stripeAccountId,
         emailb: emailb,
+        fname: fnameb,
+        lname: lnameb,
       };
 
       res.header("auth-token", tokenB).send(tokenBAndURL);
