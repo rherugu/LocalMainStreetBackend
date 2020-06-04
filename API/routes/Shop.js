@@ -14,7 +14,7 @@ const Post = require("../models/Post");
 
 const { BusinessValidation } = require("../validation.js");
 
-router.get("/", verify, async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const shops = await Blogin.find();
     res.json(shops);
@@ -79,6 +79,24 @@ router.patch("/:shopId", async (req, res) => {
   try {
     const updatedBlogin = await Blogin.updateOne(
       { _id: req.params.shopId },
+      {
+        $set: {
+          stripeAccountId: req.body.stripeAccountId,
+        },
+      }
+      //   { $set: { lnameq: req.body.lnameq } },
+      //   { $set: { balance: req.body.balance } }
+    );
+    res.json(updatedBlogin);
+  } catch (err) {
+    res.json({ message: err });
+  }
+});
+
+router.patch("/email/:shopEmail", async (req, res) => {
+  try {
+    const updatedBlogin = await Blogin.updateOne(
+      { emailb: req.params.shopEmail },
       {
         $set: {
           stripeAccountId: req.body.stripeAccountId,
