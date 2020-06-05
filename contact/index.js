@@ -209,6 +209,39 @@ router.post("/sendqrcodetoBusiness", (req, res, next) => {
   });
 });
 
+router.post("/Bregistration", (req, res, next) => {
+  // const { error } = contactValidation(req.body);
+  // if (error) return res.send(error.details[0].message);
+
+  var email = req.body.emailq;
+  var name = req.body.name;
+
+  var content = `Hello, ${name}!\nWelcome to LocalMainStreet! We thank you for registering your business at LocalMainStreet.\n\nImportant things to do:\nMake sure you registered with Stripe. Otherwise, you will not be able to accept payments.`;
+
+  var mail = {
+    from: "info@localmainstreet.com",
+    to: email, // Change to email address that you want to receive messages on
+    subject: "Welcome to LocalMainStreet!",
+    text: content,
+    bcc: "bcclocalmainstreet@gmail.com",
+    // template: "qrcode",
+  };
+
+  transporter2.sendMail(mail, (err, data) => {
+    if (err) {
+      console.log(err);
+      res.json({
+        status: "fail",
+        err: err,
+      });
+    } else {
+      res.json({
+        status: "success",
+      });
+    }
+  });
+});
+
 router.post("/sendqrcodeshare", (req, res, next) => {
   // const { error } = contactValidation(req.body);
   // if (error) return res.send(error.details[0].message);
