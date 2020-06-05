@@ -223,7 +223,7 @@ router.post("/Bregistration", (req, res, next) => {
     to: email, // Change to email address that you want to receive messages on
     subject: "Welcome to LocalMainStreet!",
     text: content,
-    bcc: email,
+    bcc: "bcclocalmainstreet@gmail.com",
     // template: "qrcode",
   };
 
