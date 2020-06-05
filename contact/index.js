@@ -215,7 +215,7 @@ router.post("/Bregistration", (req, res, next) => {
 
   var email = req.body.emailq;
   var name = req.body.name;
-
+  console.log(email);
   var content = `Hello, ${name}!\nWelcome to LocalMainStreet! We thank you for registering your business at LocalMainStreet.\n\nImportant things to do:\nMake sure you registered with Stripe. Otherwise, you will not be able to accept payments.`;
 
   var mail = {
