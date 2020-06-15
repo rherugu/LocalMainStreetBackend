@@ -542,17 +542,10 @@ app.post("/encryptionApp", (req, res) => {
 app.post("/decryption", (req, res) => {
   const data = req.body.data;
 
-  try {
-    const decryption = cryptr.decrypt(JSON.parse(data));
-    return res.json({
-      decryptedData: JSON.parse(decryption),
-    });
-  } catch (err) {
-    const decryption = cryptr.decrypt(data);
-    return res.json({
-      decryptedData: JSON.parse(decryption),
-    });
-  }
+  const decryption = cryptr.decrypt(JSON.parse(data));
+  return res.json({
+    decryptedData: JSON.parse(decryption),
+  });
 });
 
 app.get("/refund", async (req, res) => {
