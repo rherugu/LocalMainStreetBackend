@@ -53,22 +53,8 @@ const BusinessValidation = (req) => {
       .allow("  ")
       .optional()
       .default(""),
-    lat: Joi.number()
-      .allow("")
-      .allow(" ")
-      .allow(null)
-      .allow(NaN)
-      .allow("  ")
-      .optional()
-      .default(""),
-    lng: Joi.number()
-      .allow("")
-      .allow(" ")
-      .allow(null)
-      .allow(NaN)
-      .allow("  ")
-      .optional()
-      .default(""),
+    lat: Joi.number().required(),
+    lng: Joi.number().required(),
   });
   return schema.validate(req);
 };
