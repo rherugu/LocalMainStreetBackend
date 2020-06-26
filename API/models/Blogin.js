@@ -56,6 +56,14 @@ const BloginSchema = mongoose.Schema({
     type: String,
     default: " ",
   },
+  lat: {
+    type: Number,
+    default: " ",
+  },
+  lng: {
+    type: Number,
+    default: " ",
+  },
 });
 
 module.exports = mongoose.model("Blogin", BloginSchema);

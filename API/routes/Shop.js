@@ -64,6 +64,8 @@ router.post("/", async (req, res) => {
     phoneNumber: req.body.phoneNumber,
     stripeAccountId: req.body.stripeAccountId,
     website: req.body.website,
+    lat: req.body.lat,
+    lng: req.body.lng,
   });
 
   try {
