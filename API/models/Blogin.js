@@ -64,6 +64,12 @@ const BloginSchema = mongoose.Schema({
     type: Number,
     default: " ",
   },
+  city: {
+    type: String,
+  },
+  zipCode: {
+    type: String,
+  },
 });
 
 module.exports = mongoose.model("Blogin", BloginSchema);

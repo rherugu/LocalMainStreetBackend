@@ -66,6 +66,8 @@ router.post("/", async (req, res) => {
     website: req.body.website,
     lat: req.body.lat,
     lng: req.body.lng,
+    city: req.body.city,
+    zipCode: req.body.zipCode,
   });
 
   try {
@@ -117,10 +119,13 @@ router.post("/search", async (req, res) => {
   const query = req.body.query;
 
   var result;
+  var result1;
+  var result2;
+
+  var array = [];
 
   try {
     const regex = new RegExp(`${query}`, "i");
-    console.log(regex);
     result = await Blogin.find({
       bname: { $regex: regex },
       // function(err) {
@@ -128,9 +133,37 @@ router.post("/search", async (req, res) => {
       //   console.log(query);
       // },
     });
-
+    if (result !== undefined || null || NaN || "" || {} || []) {
+      array = array.concat(result);
+    }
+    if (result === undefined || null || NaN || "" || {} || []) {
+      result1 = await Blogin.find({
+        city: { $regex: regex },
+        // function(err) {
+        //   if (err) return err;
+        //   console.log(query);
+        // },
+      });
+      if (result1 !== undefined || null || NaN || "" || {} || []) {
+        array = array.concat(result1);
+      }
+    }
+    if (result1 === undefined || null || NaN || "" || {} || []) {
+      result2 = await Blogin.find({
+        zipCode: { $regex: regex },
+        // function(err) {
+        //   if (err) return err;
+        //   console.log(query);
+        // },
+      });
+      console.log("fjdsj");
+      if (result2 !== undefined || null || NaN || "" || {} || []) {
+        array = array.concat(result2);
+      }
+    }
+    console.log(array);
     res.json({
-      result: result,
+      results: array,
     });
   } catch (err) {
     console.error(err);

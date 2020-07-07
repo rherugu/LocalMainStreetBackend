@@ -55,6 +55,8 @@ const BusinessValidation = (req) => {
       .default(""),
     lat: Joi.number().required(),
     lng: Joi.number().required(),
+    city: Joi.string().required(),
+    zipCode: Joi.string().required(),
   });
   return schema.validate(req);
 };
