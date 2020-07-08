@@ -115,9 +115,10 @@ router.post("/send", (req, res, next) => {
         {
           from: "info@localmainstreet.com",
           to: email,
-          subject: "Submission was successful",
+          subject:
+            "Submission was successful at the LocalMainStreet Contact Form",
           text:
-            "Thank you for contacting us! If you have a problem, we will work hard to help.\n\nIf you have feedback, we will accept it with open arms and strive to get better.\n\n\nFrom, LocalMainStreet",
+            "Thank you for contacting us! We are in the process of reading the message. Please allow up to 2 days.\n\n\nFrom, The LocalMainStreet Team",
         },
         function (error, info) {
           if (error) {
