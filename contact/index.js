@@ -145,7 +145,7 @@ router.post("/sendqrcode", (req, res, next) => {
   var email = req.body.emailq;
   var bname = req.body.bname;
   var amount = req.body.amount;
-  var content = `Hello! Thank you for supporting your local business.\nYou have successfully purchased a gift card/voucher from ${bname} for the amount $${amount}.\n\nRedeem it at ${bname}.\n\n\nFrom, LocalMainStreet`;
+  var content = `Hello! Thank you for supporting your local business.\nYou have successfully purchased a gift card/voucher from ${bname} for the amount $${amount}.\n\nRedeem it at ${bname}.\nIn order for you to redeem it, simply go to ${bname}, when you feel comfortable, and show this QRCode to them. Then they will scan it for you.\n\nThats it!\n\nFrom, LocalMainStreet`;
 
   var mail = {
     from: "info@localmainstreet.com",
