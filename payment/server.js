@@ -461,7 +461,9 @@ app.post(
         balance: balance,
         businessName: businessName,
         charge: charge,
+        emailbusiness: emailbusiness,
       };
+      console.log(emailbusiness);
 
       console.log(qrcodeDataParsed);
 
