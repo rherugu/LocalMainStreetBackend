@@ -217,7 +217,7 @@ router.post("/Bregistration", (req, res, next) => {
   var email = req.body.emailq;
   var name = req.body.name;
   console.log(email);
-  var content = `Hello, ${name}!\nWelcome to LocalMainStreet! We thank you for registering your business.\n\nPlease make sure you register with Stripe so that you can accept payments. In order to do so, please follow instructions as followed:\n\nFirst, login to your account with LocalMainStreet.\nThen, in red text, you will see it says you have authorized your account. To do so, hit continue.\nFill in all the information asked in the next page. Click Done.\nThats It!\n\nIf you need help please contact info@localmainstreet.com.`;
+  var content = `Hello, ${name}!\nWelcome to LocalMainStreet! We thank you for registering your business.\n\nPlease download the LocalMainStreet App available in iOS and android. If someone buys a voucher from you, you will need this to redeem it.\n\nIn order to redeem it, if a customer buys a voucher, they will show you a QR Code which you will scan on the app. On the app, first login, then scan it. Then in the textbox, enter the bill that the customer has to pay. Click Submit. If the bill is more than the amount on the voucher, just click the pay full amount button and ask the customer to pay the rest by card, cash, etc. If you need help please contact info@localmainstreet.com.`;
 
   var mail = {
     from: "info@localmainstreet.com",
