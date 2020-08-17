@@ -23,6 +23,33 @@ router.get("/", async (req, res) => {
   }
 });
 
+router.get("/pagination", async (req, res) => {
+  try {
+    const perPage = 17;
+
+    let page = req.headers.page;
+    // Select the 1st - 17th document
+    var results = await Blogin.find()
+      .skip(page * perPage)
+      .limit(perPage);
+
+    res.json(results);
+  } catch (err) {
+    res.json({ message: err });
+  }
+});
+
+router.get("/count", async (req, res) => {
+  try {
+    Blogin.countDocuments({}, (err, count) => {
+      console.log(count);
+      res.json(count);
+    });
+  } catch (err) {
+    res.json({ message: err });
+  }
+});
+
 router.get("/:emailb", verify, async (req, res) => {
   try {
     const shops = await Blogin.findOne({ emailb: req.params.emailb });
