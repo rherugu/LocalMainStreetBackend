@@ -48,6 +48,16 @@ app.post("/", async (req, res) => {
   // });
   const qrcode = new Main({
     encData: req.body.encData,
+    emailq: req.body.emailq,
+    nameq: req.body.nameq,
+    balance: req.body.balance,
+    businessName: req.body.businessName,
+    charge: req.body.charge,
+    emailbusiness: req.body.emailbusiness,
+    originalBalance: req.body.balance,
+    day: req.body.day,
+    month: req.body.month,
+    year: req.body.year,
   });
 
   try {
@@ -113,6 +123,7 @@ app.patch("/:mainId", async (req, res) => {
       {
         $set: {
           encData: req.body.encData,
+          balance: req.body.balance,
         },
       }
     );
