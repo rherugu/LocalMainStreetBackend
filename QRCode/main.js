@@ -32,7 +32,8 @@ app.get("/", async (req, res) => {
 
 app.get("/dashboardsearch", async (req, res) => {
   try {
-    const main = await Main.find({ emailq: req.headers.emailq });
+    console.log(req.query);
+    const main = await Main.find({ emailq: req.query.emailq });
     res.json(main);
   } catch (err) {
     res.json({ message: err });
