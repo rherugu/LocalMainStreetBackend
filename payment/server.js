@@ -454,6 +454,11 @@ app.post(
 
       paymentIntent = e.data.object.payment_intent;
       console.info(paymentIntent);
+      var d = new Date();
+
+      const day = d.getDate();
+      const month = d.getMonth() + 1;
+      const year = d.getFullYear();
 
       var qrcodeDataParsed = {
         emailq: emailq,
@@ -462,6 +467,10 @@ app.post(
         businessName: businessName,
         charge: charge,
         emailbusiness: emailbusiness,
+        originalBalance: balance,
+        day: day,
+        month: month,
+        year: year,
       };
       console.log(emailbusiness);
 
@@ -477,6 +486,16 @@ app.post(
 
       const qrcode = new Main({
         encData: encryptedData,
+        emailq: emailq,
+        nameq: nameq,
+        balance: balance,
+        businessName: businessName,
+        charge: charge,
+        emailbusiness: emailbusiness,
+        originalBalance: balance,
+        day: day,
+        month: month,
+        year: year,
       });
 
       try {
