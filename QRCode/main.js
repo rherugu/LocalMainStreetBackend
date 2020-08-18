@@ -7,6 +7,7 @@ const Main = require("./models/Main");
 const bodyParser = require("body-parser");
 
 const cors = require("cors");
+const { request } = require("../contact");
 app.use(cors());
 app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
@@ -23,6 +24,15 @@ app.use(bodyParser.json());
 app.get("/", async (req, res) => {
   try {
     const main = await Main.find();
+    res.json(main);
+  } catch (err) {
+    res.json({ message: err });
+  }
+});
+
+app.get("/dashboardsearch", async (req, res) => {
+  try {
+    const main = await Main.find({ emailq: req.headers.emailq });
     res.json(main);
   } catch (err) {
     res.json({ message: err });
