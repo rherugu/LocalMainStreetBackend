@@ -349,10 +349,10 @@ app.post("/dashboard", (req, res) => {
 
 app.use("/dashboard", cors());
 
-app.get("/dashboard", async (req, res) => {
-  const link = await stripe.accounts.createLoginLink(idForLink.stripeAccountId);
+app.get("/dashboardGet", async (req, res) => {
+  const link = await stripe.accounts.createLoginLink(req.query.stripeAccountId);
 
-  return res.send(link);
+  return res.json({ url: link });
 });
 
 app.post("/getInfo", (req, res) => {
