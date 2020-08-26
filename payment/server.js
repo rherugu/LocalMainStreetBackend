@@ -283,7 +283,7 @@ app.post("/create-checkout-session", async (req, res) => {
 
     businessName = product.bname;
     emailbusiness = product.email;
-
+    console.log("rgahav testin f pridasd", product);
     amountPaid = quantity;
     console.log("donation: ", donation);
     var amountone = quantity * 100;
