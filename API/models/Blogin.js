@@ -70,6 +70,9 @@ const BloginSchema = mongoose.Schema({
   zipCode: {
     type: String,
   },
+  coupon: {
+    type: Boolean,
+  },
 });
 
 module.exports = mongoose.model("Blogin", BloginSchema);

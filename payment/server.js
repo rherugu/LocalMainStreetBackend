@@ -294,6 +294,11 @@ app.post("/create-checkout-session", async (req, res) => {
     var newDonation = 100;
     var application_fee_amount = Math.ceil((finalamount + appFee) * 0.029 + 30);
     console.log(appFee);
+    var couponbool = false;
+
+    if (product.coupon === true) {
+      couponbool = true;
+    }
 
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
@@ -309,13 +314,13 @@ app.post("/create-checkout-session", async (req, res) => {
           // from manipulating on client
         },
       ],
+      allow_promotion_codes: couponbool,
       payment_intent_data: {
         transfer_data: {
           destination: product.id,
         },
         application_fee_amount: application_fee_amount + donation,
       },
-
       // ?session_id={CHECKOUT_SESSION_ID}\
       // means the redirect will have the session ID set as a query param
       success_url: `https://localmainstreet.com/Shop?session_id={CHECKOUT_SESSION_ID}`,

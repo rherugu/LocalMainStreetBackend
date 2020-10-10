@@ -57,6 +57,13 @@ const BusinessValidation = (req) => {
     lng: Joi.number().required(),
     city: Joi.string().required(),
     zipCode: Joi.string().required(),
+    coupon: Joi.bool()
+      .allow("")
+      .allow(" ")
+      .allow(null)
+      .allow(NaN)
+      .allow("  ")
+      .optional(),
   });
   return schema.validate(req);
 };

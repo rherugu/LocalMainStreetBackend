@@ -95,6 +95,7 @@ router.post("/", async (req, res) => {
     lng: req.body.lng,
     city: req.body.city,
     zipCode: req.body.zipCode,
+    coupon: req.body.coupon,
   });
 
   try {
